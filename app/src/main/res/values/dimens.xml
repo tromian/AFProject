@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="legal_age">12sp</dimen>
+    <dimen name="movie_title_details">36sp</dimen>
+    <dimen name="back_button_text">16sp</dimen>
+    <dimen name="storyline_title">14sp</dimen>
+    <dimen name="storyline_body">14sp</dimen>
+    <dimen name="cast_title">14sp</dimen>
+</resources>

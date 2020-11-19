@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#191926">
+    android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,12 +15,14 @@
         <ImageView
             android:id="@+id/imageView2"
             android:layout_width="0dp"
-            android:layout_height="397dp"
-            android:scaleType="fitXY"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@+id/ivMask"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/orig" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/origh512" />
 
         <ImageView
             android:id="@+id/ivMask"
@@ -39,7 +41,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginBottom="12dp"
             android:text="@string/legal_age"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toTopOf="@+id/tvTitle"
             app:layout_constraintStart_toStartOf="parent" />
@@ -52,7 +54,7 @@
             android:layout_marginTop="252dp"
             android:layout_marginEnd="16dp"
             android:text="@string/movie_name"
-            android:textColor="#ECECEC"
+            android:textColor="@color/heading_white"
             android:textSize="36sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -67,7 +69,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:text="@string/movie_categories"
-            android:textColor="#FF3466"
+            android:textColor="@color/categories"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -131,7 +134,7 @@
             android:layout_marginStart="9dp"
             android:layout_marginTop="4dp"
             android:text="@string/movie_reviews"
-            android:textColor="#6D6D80"
+            android:textColor="@color/grey"
             app:layout_constraintStart_toEndOf="@+id/ivStar5"
             app:layout_constraintTop_toBottomOf="@+id/tvTag" />
 
@@ -163,7 +166,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
             android:text="@string/text_back"
-            android:textColor="#6D6D80"
+            android:textColor="@color/grey"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/view"
             app:layout_constraintStart_toEndOf="@+id/imageView7"
@@ -177,7 +180,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:text="@string/movie_storyline_header"
-            android:textColor="#ffffff"
+            android:textColor="@color/heading_white"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -193,7 +196,7 @@
             android:layout_marginEnd="16dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/movie_storyline"
-            android:textColor="#ffffff"
+            android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -214,7 +217,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
             android:text="@string/movie_cast_header"
-            android:textColor="#ffffff"
+            android:textColor="@color/heading_white"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
