@@ -8,4 +8,5 @@
     <string name="movie_storyline_header">Storyline</string>
     <string name="movie_storyline">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
     <string name="movie_cast_header">Cast</string>
+    <string name="runtime">127 MIN</string>
 </resources>
