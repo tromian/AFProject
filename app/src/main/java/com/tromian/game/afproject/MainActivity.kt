@@ -33,4 +33,8 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
                 .commit()
     }
 
+    override fun onBackButtonClicked() {
+        supportFragmentManager.popBackStack()
+    }
+
 }
