@@ -6,21 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
-class FragmentMoviesList : Fragment(R.layout.fragment_movies_list){
+class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list){
 
     private var someFragmentClickListener : SomeItemClickListener? = null
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<View>(R.id.testPreview).apply {
-            setOnClickListener {
-                someFragmentClickListener?.onMoviePreviewClicked()
-            }
-        }
-
+        val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
+        val list = getMoviesList()
+        val adapter = MoviesListAdapter(requireContext(),list)
+        rvMovieList.adapter = adapter
+        rvMovieList.layoutManager = GridLayoutManager(context,2, RecyclerView.VERTICAL, false)
 
 
     }
@@ -38,5 +38,78 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list){
         super.onDetach()
         someFragmentClickListener = null
     }
+
+
+    private fun getMoviesList() : List<Movie> {
+
+        val list = arrayListOf<Movie>()
+
+        list.add(Movie("Avangers",
+                "Action, Adventure, Drama",
+                "+13",
+                4,
+                125,
+                "",
+                137,
+                R.drawable.poster
+        ))
+        list.add(Movie("Avangers",
+                "Action, Adventure, Drama",
+                "+13",
+                4,
+                125,
+                "",
+                137,
+                R.drawable.chris_evans
+        ))
+        list.add(Movie("Avangers",
+                "Action, Adventure, Drama",
+                "+13",
+                4,
+                125,
+                "",
+                137,
+                R.drawable.poster
+        ))
+        list.add(Movie("Avangers",
+                "Action, Adventure, Drama",
+                "+13",
+                4,
+                125,
+                "",
+                137,
+                R.drawable.poster
+        ))
+        list.add(Movie("Avangers",
+                "Action, Adventure, Drama",
+                "+13",
+                4,
+                125,
+                "",
+                137,
+                R.drawable.poster
+        ))
+        list.add(Movie("Avangers",
+                "Action, Adventure, Drama",
+                "+13",
+                4,
+                125,
+                "",
+                137,
+                R.drawable.poster
+        ))
+        list.add(Movie("Avangers",
+                "Action, Adventure, Drama",
+                "+13",
+                4,
+                125,
+                "",
+                137,
+                R.drawable.poster
+        ))
+
+        return list
+    }
+
 
 }

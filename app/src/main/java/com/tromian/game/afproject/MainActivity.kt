@@ -14,6 +14,8 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
                     .add(R.id.main_container, FragmentMoviesList(), FRAGMENT_TAG)
@@ -36,5 +38,8 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
     override fun onBackButtonClicked() {
         supportFragmentManager.popBackStack()
     }
+
+
+
 
 }
