@@ -10,5 +10,4 @@ data class Movie(
         val storyline: String,
         val runtime: Int,
         val titleImage: Int,
-) {
-}
+)

@@ -9,26 +9,25 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list){
+class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
-    private var someFragmentClickListener : SomeItemClickListener? = null
+    private var someFragmentClickListener: SomeItemClickListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
         val list = getMoviesList()
-        val adapter = MoviesListAdapter(requireContext(),list)
+        val adapter = MoviesListAdapter(requireContext(), list)
         rvMovieList.adapter = adapter
-        rvMovieList.layoutManager = GridLayoutManager(context,2, RecyclerView.VERTICAL, false)
-
+        rvMovieList.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
 
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is SomeItemClickListener){
+        if (context is SomeItemClickListener) {
             someFragmentClickListener = context
         }
 
@@ -40,7 +39,7 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list){
     }
 
 
-    private fun getMoviesList() : List<Movie> {
+    private fun getMoviesList(): List<Movie> {
 
         val list = arrayListOf<Movie>()
 
@@ -56,7 +55,7 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list){
         list.add(Movie("Avangers",
                 "Action, Adventure, Drama",
                 "+13",
-                4,
+                1,
                 125,
                 "",
                 137,
@@ -65,7 +64,7 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list){
         list.add(Movie("Avangers",
                 "Action, Adventure, Drama",
                 "+13",
-                4,
+                2,
                 125,
                 "",
                 137,
@@ -74,7 +73,7 @@ class FragmentMoviesList() : Fragment(R.layout.fragment_movies_list){
         list.add(Movie("Avangers",
                 "Action, Adventure, Drama",
                 "+13",
-                4,
+                3,
                 125,
                 "",
                 137,
