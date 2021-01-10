@@ -3,8 +3,14 @@ package com.tromian.game.afproject
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.lifecycle.lifecycleScope
+import com.tromian.game.afproject.data.loadMovies
+import com.tromian.game.afproject.model.Movie
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), SomeItemClickListener {
+class MainActivity() : AppCompatActivity(), SomeItemClickListener {
 
     companion object {
         const val FRAGMENT_TAG = "List"
@@ -13,8 +19,6 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
@@ -28,17 +32,17 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
 
     }
 
+
     override fun onMoviePreviewClicked() {
-        supportFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .add(R.id.main_container, FragmentMoviesDetails())
-                .commit()
+//        supportFragmentManager.beginTransaction()
+//                .addToBackStack(null)
+//                .add(R.id.main_container, FragmentMoviesDetails())
+//                .commit()
     }
 
     override fun onBackButtonClicked() {
         supportFragmentManager.popBackStack()
     }
-
 
 
 

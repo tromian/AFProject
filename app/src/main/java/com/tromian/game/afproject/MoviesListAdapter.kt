@@ -2,18 +2,23 @@ package com.tromian.game.afproject
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.tromian.game.afproject.model.Genre
+import com.tromian.game.afproject.model.Movie
+
 
 class MoviesListAdapter(
-        context: Context,
+        val context: Context,
         val films: List<Movie>
 ) : RecyclerView.Adapter<MoviesListAdapter.MoviesViewHolder>() {
-
+    private var someFragmentClickListener : SomeItemClickListener? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     fun getItem(position: Int): Movie = films[position]
@@ -35,15 +40,19 @@ class MoviesListAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(movie: Movie) {
-            bgPoster.setImageResource(movie.titleImage)
-            title.text = movie.name
-            legalAge.text = movie.age
-            category.text = movie.category
-            reviews.text = "${movie.reviewers} Reviews"
-            runtime.text = "${movie.runtime} MIN"
+            Glide.with(context).load(movie.imageUrl).into(bgPoster)
+            title.text = movie.title
+            legalAge.text = movie.pgAge.toString() + "+"
+            category.text = movie.genres.toString()
+            reviews.text = "${movie.reviewCount} Reviews"
+            runtime.text = "${movie.runningTime} MIN"
             showRating(movie.rating)
+            itemView.setOnClickListener {
+                someFragmentClickListener?.onMoviePreviewClicked()
+            }
 
         }
+
 
         fun showRating(rating: Int) = when (rating) {
             1 -> star1.setImageResource(R.drawable.ic_star_icon_fill)
@@ -82,7 +91,6 @@ class MoviesListAdapter(
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         holder.bind(getItem(position))
-
     }
 
     override fun getItemCount(): Int {

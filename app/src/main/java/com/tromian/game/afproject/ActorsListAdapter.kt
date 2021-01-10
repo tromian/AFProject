@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.tromian.game.afproject.model.Actor
 
 class ActorsListAdapter(
         context: Context,
@@ -22,7 +23,7 @@ class ActorsListAdapter(
         private val name: TextView = itemView.findViewById(R.id.name)
 
         fun bind(actor: Actor){
-            avatar.setImageResource(actor.picture)
+            //avatar.setImageResource(actor.imageUrl)
             name.text = actor.name
         }
     }
