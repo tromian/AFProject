@@ -10,15 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
 import com.tromian.game.afproject.model.Genre
 import com.tromian.game.afproject.model.Movie
-
 
 class MoviesListAdapter(
         val context: Context,
         val films: List<Movie>
 ) : RecyclerView.Adapter<MoviesListAdapter.MoviesViewHolder>() {
-    private var someFragmentClickListener : SomeItemClickListener? = null
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
     fun getItem(position: Int): Movie = films[position]
@@ -40,21 +39,17 @@ class MoviesListAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(movie: Movie) {
-            Glide.with(context).load(movie.imageUrl).into(bgPoster)
+            GlideApp.with(context).load(movie.imageUrl).into(bgPoster)
             title.text = movie.title
             legalAge.text = movie.pgAge.toString() + "+"
             category.text = movie.genres.toString()
             reviews.text = "${movie.reviewCount} Reviews"
             runtime.text = "${movie.runningTime} MIN"
             showRating(movie.rating)
-            itemView.setOnClickListener {
-                someFragmentClickListener?.onMoviePreviewClicked()
-            }
 
         }
 
-
-        fun showRating(rating: Int) = when (rating) {
+        private fun showRating(rating: Int) = when (rating) {
             1 -> star1.setImageResource(R.drawable.ic_star_icon_fill)
 
             2 -> {

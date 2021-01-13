@@ -29,7 +29,6 @@ class MainActivity() : AppCompatActivity(), SomeItemClickListener {
             supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as FragmentMoviesList
         }
 
-
     }
 
 
