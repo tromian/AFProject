@@ -35,7 +35,7 @@ class MainActivity() : AppCompatActivity(), SomeItemClickListener {
     override fun onMoviePreviewClicked() {
 //        supportFragmentManager.beginTransaction()
 //                .addToBackStack(null)
-//                .add(R.id.main_container, FragmentMoviesDetails())
+//                .add(R.id.main_container, FragmentMoviesDetails(bundle))
 //                .commit()
     }
 

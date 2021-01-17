@@ -6,13 +6,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tromian.game.afproject.model.Movie
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val TAG = "MyTag"
-    init {
-        Log.d(TAG, "MovieViewHolder created")
-    }
+
     val bgPoster: ImageView = itemView.findViewById(R.id.ivBackgroundPoster)
     private val title: TextView = itemView.findViewById(R.id.tvTitle)
     private val legalAge: TextView = itemView.findViewById(R.id.tvAge)
@@ -28,6 +26,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
     fun bind(movie: Movie) {
+        Glide.with(itemView.context).load(movie.imageUrl).into(bgPoster)
         title.text = movie.title
         legalAge.text = movie.pgAge.toString() + "+"
         category.text = movie.genres.toString()

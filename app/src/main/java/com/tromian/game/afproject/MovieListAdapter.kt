@@ -8,17 +8,14 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.annotation.GlideModule
 import com.tromian.game.afproject.model.Movie
+import java.lang.Exception
 
 
-class MovieListAdapter(
-    val context: Context
-) : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
-    val TAG = "MyTag"
+class MovieListAdapter : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
 
-    init {
-        Log.d(TAG, "MovieListAdapter created")
-    }
+
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
@@ -28,25 +25,29 @@ class MovieListAdapter(
                 oldItem == newItem
         }
     }
-    private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        Log.d(TAG, "onCreateViewHolder")
+
         val inflater = LayoutInflater.from(parent.context)
         return MovieViewHolder(inflater.inflate(R.layout.view_holder_movie, parent,false))
 
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        Log.d(TAG, "onBindViewHolder")
-        val movie = differ.currentList[position]
+
+        val movie = getItem(position)
+        holder.itemView.apply {
+            try {
+                Glide.with(this).load(movie.imageUrl).into(holder.bgPoster)
+            }catch (e: Exception){
+                Log.d("glide", e.toString())
+            }
+
+        }
         holder.bind(movie)
-        Glide.with(context).load(movie.imageUrl).into(holder.bgPoster)
 
     }
 
-    override fun getItemCount(): Int {
-        return differ.currentList.size
-    }
+
 
 }

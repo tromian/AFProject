@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'org.jetbrains.kotlin.plugin.serialization'
-    id "org.jetbrains.kotlin.kapt"
 }
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
