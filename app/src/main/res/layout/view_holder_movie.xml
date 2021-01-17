@@ -11,20 +11,19 @@
     android:layout_margin="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="2dp">
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/ivBackgroundPoster"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@+id/ivMask"
-            app:layout_constraintEnd_toStartOf="@+id/ivMask"
+            app:layout_constraintEnd_toEndOf="@+id/ivMask"
             app:layout_constraintStart_toStartOf="@+id/ivMask"
-            app:layout_constraintTop_toTopOf="@+id/ivMask"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/poster" />
 
         <ImageView
@@ -34,8 +33,8 @@
             android:layout_marginBottom="8dp"
             android:scaleType="fitXY"
             android:src="@drawable/mask"
-            app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintBottom_toTopOf="@+id/tvTitle"
+            app:layout_constraintDimensionRatio="2:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -82,11 +81,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="24dp"
             android:text="@string/movie_categories"
             android:textColor="@color/categories"
             android:textSize="8sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/ivMask"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

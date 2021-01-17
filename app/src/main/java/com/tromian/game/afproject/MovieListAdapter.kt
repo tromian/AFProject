@@ -38,7 +38,10 @@ class MovieListAdapter : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
         val movie = getItem(position)
         holder.itemView.apply {
             try {
-                Glide.with(this).load(movie.imageUrl).into(holder.bgPoster)
+                Glide.with(this)
+                        .load(movie.imageUrl)
+                        .into(holder.bgPoster)
+
             }catch (e: Exception){
                 Log.d("glide", e.toString())
             }
