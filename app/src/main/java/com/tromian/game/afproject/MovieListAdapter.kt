@@ -36,17 +36,6 @@ class MovieListAdapter : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
 
         val movie = getItem(position)
-        holder.itemView.apply {
-            try {
-                Glide.with(this)
-                        .load(movie.imageUrl)
-                        .into(holder.bgPoster)
-
-            }catch (e: Exception){
-                Log.d("glide", e.toString())
-            }
-
-        }
         holder.bind(movie)
 
     }
