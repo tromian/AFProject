@@ -29,14 +29,13 @@ class MainActivity() : AppCompatActivity(), SomeItemClickListener {
             supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as FragmentMoviesList
         }
 
-
     }
 
 
     override fun onMoviePreviewClicked() {
 //        supportFragmentManager.beginTransaction()
 //                .addToBackStack(null)
-//                .add(R.id.main_container, FragmentMoviesDetails())
+//                .add(R.id.main_container, FragmentMoviesDetails(bundle))
 //                .commit()
     }
 

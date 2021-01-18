@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.model.Movie
 
-class FragmentMoviesDetails(private val movie: Movie) : Fragment(R.layout.fragment_movie_details) {
+class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener : SomeItemClickListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
