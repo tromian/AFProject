@@ -35,7 +35,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     }
 
-    fun openFragment(itemId : Int){
+    private fun openFragment(itemId : Int){
 
         val movie = listMovies?.get(itemId)
         val activity = requireActivity() as MainActivity
