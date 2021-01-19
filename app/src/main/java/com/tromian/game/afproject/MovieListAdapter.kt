@@ -1,20 +1,14 @@
 package com.tromian.game.afproject
 
-import android.content.Context
-import android.util.Log
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
 import com.tromian.game.afproject.model.Movie
-import java.lang.Exception
 
 
-class MovieListAdapter : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
-
+class MovieListAdapter(val itemCallback: (itemId : Int) -> Unit) : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
@@ -34,12 +28,12 @@ class MovieListAdapter : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-
         val movie = getItem(position)
         holder.bind(movie)
+        holder.itemView.setOnClickListener {
+            itemCallback(position)
+        }
 
     }
-
-
 
 }

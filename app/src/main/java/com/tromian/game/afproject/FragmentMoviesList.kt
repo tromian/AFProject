@@ -11,16 +11,16 @@ import com.tromian.game.afproject.data.loadMovies
 import com.tromian.game.afproject.model.Movie
 import kotlinx.coroutines.launch
 
-class FragmentMoviesList: Fragment(R.layout.fragment_movies_list) {
+class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
-    val TAG = "MyTag"
-
-    private var someFragmentClickListener: SomeItemClickListener? = null
+    var listMovies : List<Movie>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var listMovies : List<Movie>? = null
-        val adapter = MovieListAdapter()
+
+        val adapter = MovieListAdapter() { itemId ->
+            openFragment(itemId)
+        }
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
 
         rvMovieList.adapter = adapter
@@ -31,20 +31,21 @@ class FragmentMoviesList: Fragment(R.layout.fragment_movies_list) {
             adapter.submitList(listMovies)
 
         }
+
+
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    fun openFragment(itemId : Int){
 
-        if (context is SomeItemClickListener) {
-            someFragmentClickListener = context
+        val movie = listMovies?.get(itemId)
+        val activity = requireActivity() as MainActivity
+        if (movie != null){
+            activity.supportFragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .add(R.id.main_container, FragmentMoviesDetails(movie))
+                    .commit()
         }
 
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        someFragmentClickListener = null
     }
 
 

@@ -7,7 +7,6 @@ import com.tromian.game.afproject.model.Genre
 import com.tromian.game.afproject.model.Movie
 
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
