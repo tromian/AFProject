@@ -1,6 +1,5 @@
 package com.tromian.game.afproject
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
-    var listMovies : List<Movie>? = null
+    var listMovies: List<Movie>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,11 +34,11 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     }
 
-    private fun openFragment(itemId : Int){
+    private fun openFragment(itemId: Int) {
 
         val movie = listMovies?.get(itemId)
         val activity = requireActivity() as MainActivity
-        if (movie != null){
+        if (movie != null) {
             activity.supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
                     .add(R.id.main_container, FragmentMoviesDetails(movie))

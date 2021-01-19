@@ -12,21 +12,19 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tromian.game.afproject.model.Actor
-import com.tromian.game.afproject.model.Movie
-import java.lang.Exception
 
 class ActorsListAdapter(private val context: Context) :
-    ListAdapter<Actor, ActorsListAdapter.ActorsViewHolder>(DIFF_CALLBACK) {
+        ListAdapter<Actor, ActorsListAdapter.ActorsViewHolder>(DIFF_CALLBACK) {
 
 
     companion object {
         const val TAG = "Tag"
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Actor>() {
             override fun areItemsTheSame(oldItem: Actor, newItem: Actor): Boolean =
-                oldItem.id == newItem.id
+                    oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Actor, newItem: Actor): Boolean =
-                oldItem == newItem
+                    oldItem == newItem
         }
     }
 
@@ -43,9 +41,9 @@ class ActorsListAdapter(private val context: Context) :
             Log.d(TAG, "ActorsViewHolder bind")
 
             Glide.with(itemView.context)
-                .load(actor.imageUrl)
-                .error(R.drawable.person_placeholder)
-                .into(avatar)
+                    .load(actor.imageUrl)
+                    .error(R.drawable.person_placeholder)
+                    .into(avatar)
 
             name.text = actor.name
             Log.d(TAG, actor.name)
@@ -53,8 +51,8 @@ class ActorsListAdapter(private val context: Context) :
     }
 
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
+            parent: ViewGroup,
+            viewType: Int
     ): ActorsListAdapter.ActorsViewHolder {
         Log.d(TAG, "ActorsViewHolder ONcreate")
         val inflater: LayoutInflater = LayoutInflater.from(context)

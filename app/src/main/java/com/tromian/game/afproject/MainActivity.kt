@@ -1,14 +1,7 @@
 package com.tromian.game.afproject
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import androidx.lifecycle.lifecycleScope
-import com.tromian.game.afproject.data.loadMovies
-import com.tromian.game.afproject.model.Movie
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity() : AppCompatActivity(), SomeItemClickListener {
 
@@ -20,12 +13,12 @@ class MainActivity() : AppCompatActivity(), SomeItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                     .add(R.id.main_container, FragmentMoviesList(), FRAGMENT_TAG)
                     .commit()
 
-        }else{
+        } else {
             supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as FragmentMoviesList
         }
 
@@ -34,7 +27,6 @@ class MainActivity() : AppCompatActivity(), SomeItemClickListener {
     override fun onBackButtonClicked() {
         supportFragmentManager.popBackStack()
     }
-
 
 
 }

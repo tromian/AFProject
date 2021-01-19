@@ -12,15 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tromian.game.afproject.model.Movie
-import java.lang.Exception
 
 class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie_details) {
-    private var someFragmentClickListener : SomeItemClickListener? = null
+    private var someFragmentClickListener: SomeItemClickListener? = null
     val TAG = "Tag"
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         bind(view)
-
 
 
         val listActors = movie.actors
@@ -31,7 +29,7 @@ class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie
         adapter.submitList(listActors)
 
         rvActorsList.adapter = adapter
-        rvActorsList.layoutManager = LinearLayoutManager(context,RecyclerView.HORIZONTAL,false)
+        rvActorsList.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
         view.findViewById<TextView>(R.id.tvBack).apply {
             setOnClickListener {
@@ -44,7 +42,7 @@ class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (context is SomeItemClickListener){
+        if (context is SomeItemClickListener) {
             someFragmentClickListener = context
         }
 
@@ -55,7 +53,7 @@ class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie
         someFragmentClickListener = null
     }
 
-    fun bind(view: View){
+    fun bind(view: View) {
 
         val poster: ImageView = view.findViewById(R.id.ivBackgroundPoster)
         val age: TextView = view.findViewById(R.id.tvAge)
@@ -68,7 +66,7 @@ class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie
                     .load(movie.imageUrl)
                     .into(poster)
 
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("glide", e.toString())
         }
         age.text = movie.pgAge.toString()

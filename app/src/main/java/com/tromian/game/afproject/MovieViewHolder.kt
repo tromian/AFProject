@@ -1,14 +1,12 @@
 package com.tromian.game.afproject
 
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tromian.game.afproject.model.Movie
-import java.lang.Exception
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -35,9 +33,9 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         showRating(movie.rating)
 
         Glide.with(itemView.context)
-            .load(movie.imageUrl)
-            .error(R.drawable.film_placeholder)
-            .into(bgPoster)
+                .load(movie.imageUrl)
+                .error(R.drawable.film_placeholder)
+                .into(bgPoster)
 
     }
 
