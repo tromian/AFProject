@@ -11,7 +11,7 @@ import com.tromian.game.afproject.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.viewmodels.MoviesViewModel
 import com.tromian.game.afproject.viewmodels.MoviesViewModelProviderFactory
 
-class MainActivity : AppCompatActivity(), SomeItemClickListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickListener {
 
     companion object {
         const val FRAGMENT_TAG = "List"
@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         val repository = MoviesRepository()
         val viewModelFactory = MoviesViewModelProviderFactory(application, repository)
