@@ -1,10 +1,10 @@
-package com.tromian.game.afproject.data
+package com.tromian.game.afproject.model.data
 
 
 import android.content.Context
-import com.tromian.game.afproject.model.Actor
-import com.tromian.game.afproject.model.Genre
-import com.tromian.game.afproject.model.Movie
+import com.tromian.game.afproject.model.models.Actor
+import com.tromian.game.afproject.model.models.Genre
+import com.tromian.game.afproject.model.models.Movie
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

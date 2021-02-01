@@ -1,4 +1,4 @@
-package com.tromian.game.afproject.data
+package com.tromian.game.afproject.model.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

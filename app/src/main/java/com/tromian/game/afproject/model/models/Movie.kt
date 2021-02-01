@@ -1,4 +1,4 @@
-package com.tromian.game.afproject.model
+package com.tromian.game.afproject.model.models
 
 
 import java.io.Serializable
