@@ -1,4 +1,4 @@
-package com.tromian.game.afproject
+package com.tromian.game.afproject.ui
 
 
 import android.view.View
@@ -6,7 +6,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tromian.game.afproject.model.Movie
+import com.tromian.game.afproject.R
+import com.tromian.game.afproject.model.models.Movie
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

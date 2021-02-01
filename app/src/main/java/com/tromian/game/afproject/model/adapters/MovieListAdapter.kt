@@ -1,10 +1,12 @@
-package com.tromian.game.afproject
+package com.tromian.game.afproject.model.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.tromian.game.afproject.model.Movie
+import com.tromian.game.afproject.ui.MovieViewHolder
+import com.tromian.game.afproject.R
+import com.tromian.game.afproject.model.models.Movie
 
 
 class MovieListAdapter(val itemCallback: (itemId: Int) -> Unit) : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {

@@ -1,4 +1,4 @@
-package com.tromian.game.afproject
+package com.tromian.game.afproject.model.adapters
 
 import android.content.Context
 import android.util.Log
@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tromian.game.afproject.model.Actor
+import com.tromian.game.afproject.R
+import com.tromian.game.afproject.model.models.Actor
 
 class ActorsListAdapter(private val context: Context) :
         ListAdapter<Actor, ActorsListAdapter.ActorsViewHolder>(DIFF_CALLBACK) {
@@ -53,13 +54,13 @@ class ActorsListAdapter(private val context: Context) :
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-    ): ActorsListAdapter.ActorsViewHolder {
+    ): ActorsViewHolder {
         Log.d(TAG, "ActorsViewHolder ONcreate")
         val inflater: LayoutInflater = LayoutInflater.from(context)
         return ActorsViewHolder(inflater.inflate(R.layout.view_holder_actor, parent, false))
     }
 
-    override fun onBindViewHolder(holder: ActorsListAdapter.ActorsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ActorsViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 

@@ -1,4 +1,4 @@
-package com.tromian.game.afproject
+package com.tromian.game.afproject.ui.fragments
 
 
 import android.content.Context
@@ -11,7 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tromian.game.afproject.model.Movie
+import com.tromian.game.afproject.R
+import com.tromian.game.afproject.SomeItemClickListener
+import com.tromian.game.afproject.model.adapters.ActorsListAdapter
+import com.tromian.game.afproject.model.models.Movie
 
 class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
