@@ -7,6 +7,7 @@ import com.tromian.game.afproject.R
 import com.tromian.game.afproject.SomeItemClickListener
 import com.tromian.game.afproject.model.repository.MoviesRepository
 import com.tromian.game.afproject.ui.fragments.FragmentMoviesList
+import com.tromian.game.afproject.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.viewmodels.MoviesViewModel
 import com.tromian.game.afproject.viewmodels.MoviesViewModelProviderFactory
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
     }
 
     lateinit var moviesViewModel: MoviesViewModel
+    lateinit var movieDetailsViewModel: MovieDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +26,8 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
 
         val repository = MoviesRepository()
         val viewModelFactory = MoviesViewModelProviderFactory(application,repository)
-
         moviesViewModel = ViewModelProvider(this, viewModelFactory).get(MoviesViewModel::class.java)
+        movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
 
 
         if (savedInstanceState == null) {

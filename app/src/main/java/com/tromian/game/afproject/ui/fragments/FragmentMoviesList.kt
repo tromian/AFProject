@@ -46,11 +46,12 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     private fun openFragment(itemId: Int) {
 
         val movie = listMovies?.get(itemId)
+        (activity as MainActivity).movieDetailsViewModel.movie.value = movie
         val activity = requireActivity() as MainActivity
         if (movie != null) {
             activity.supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
-                    .add(R.id.main_container, FragmentMoviesDetails(movie))
+                    .add(R.id.main_container, FragmentMoviesDetails(), MainActivity.FRAGMENT_TAG)
                     .commit()
         }
 
