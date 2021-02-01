@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), SomeItemClickListener {
         setContentView(R.layout.activity_main)
 
         val repository = MoviesRepository()
-        val viewModelFactory = MoviesViewModelProviderFactory(application,repository)
+        val viewModelFactory = MoviesViewModelProviderFactory(application, repository)
         moviesViewModel = ViewModelProvider(this, viewModelFactory).get(MoviesViewModel::class.java)
         movieDetailsViewModel = ViewModelProvider(this).get(MovieDetailsViewModel::class.java)
 

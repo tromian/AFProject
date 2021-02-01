@@ -3,13 +3,10 @@ package com.tromian.game.afproject.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,20 +15,16 @@ import com.tromian.game.afproject.SomeItemClickListener
 import com.tromian.game.afproject.model.adapters.ActorsListAdapter
 import com.tromian.game.afproject.model.models.Movie
 import com.tromian.game.afproject.ui.MainActivity
-import com.tromian.game.afproject.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.viewmodels.MoviesViewModel
 
-class FragmentMoviesDetails: Fragment(R.layout.fragment_movie_details) {
+class FragmentMoviesDetails(val itemId: Int) : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
-    lateinit var viewModel: MovieDetailsViewModel
-
-    lateinit var movie: Movie
+    lateinit var viewModel: MoviesViewModel
+    private lateinit var movie: Movie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = (activity as MainActivity).movieDetailsViewModel
-        viewModel.movie.observe(requireActivity(), Observer {
-            movie = it
-        })
+        viewModel = (activity as MainActivity).moviesViewModel
+        movie = viewModel.movieList.value?.get(itemId) as Movie
 
         bind(view)
 

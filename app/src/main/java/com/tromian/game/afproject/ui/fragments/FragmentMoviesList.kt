@@ -3,23 +3,17 @@ package com.tromian.game.afproject.ui.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.model.adapters.MovieListAdapter
-import com.tromian.game.afproject.model.data.loadMovies
-import com.tromian.game.afproject.model.models.Movie
 import com.tromian.game.afproject.ui.MainActivity
 import com.tromian.game.afproject.viewmodels.MoviesViewModel
-import kotlinx.coroutines.launch
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     lateinit var viewModel: MoviesViewModel
-    private var listMovies : List<Movie>? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,7 +27,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
         viewModel.movieList.observe(requireActivity(), Observer {
             adapter.submitList(it)
-            listMovies = it
         })
 
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
@@ -44,14 +37,13 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     }
 
     private fun openFragment(itemId: Int) {
-
-        val movie = listMovies?.get(itemId)
-        (activity as MainActivity).movieDetailsViewModel.movie.value = movie
+        val movie = viewModel.movieList.value?.get(itemId)
         val activity = requireActivity() as MainActivity
+
         if (movie != null) {
             activity.supportFragmentManager.beginTransaction()
                     .addToBackStack(null)
-                    .add(R.id.main_container, FragmentMoviesDetails(), MainActivity.FRAGMENT_TAG)
+                    .add(R.id.main_container, FragmentMoviesDetails(itemId), MainActivity.FRAGMENT_TAG)
                     .commit()
         }
 
