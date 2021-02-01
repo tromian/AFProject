@@ -18,14 +18,13 @@ import com.tromian.game.afproject.model.models.Movie
 
 class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
-    val TAG = "Tag"
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         bind(view)
 
-
         val listActors = movie.actors
-        Log.d(TAG, listActors.toString())
+
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rvActorsList)
         val adapter = ActorsListAdapter(requireContext())
 
@@ -64,14 +63,12 @@ class FragmentMoviesDetails(val movie: Movie) : Fragment(R.layout.fragment_movie
         val tags: TextView = view.findViewById(R.id.tvTag)
         val storyline: TextView = view.findViewById(R.id.storylineText)
         val reviews: TextView = view.findViewById(R.id.tvReviews)
-        try {
-            Glide.with(view.context)
-                    .load(movie.imageUrl)
-                    .into(poster)
 
-        } catch (e: Exception) {
-            Log.d("glide", e.toString())
-        }
+        Glide.with(view.context)
+                .load(movie.imageUrl)
+                .error(R.drawable.film_placeholder)
+                .into(poster)
+
         age.text = movie.pgAge.toString()
         title.text = movie.title
         storyline.text = movie.storyLine
