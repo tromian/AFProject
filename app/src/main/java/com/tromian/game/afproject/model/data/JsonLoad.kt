@@ -1,10 +1,10 @@
-package com.tromian.game.afproject.data
+package com.tromian.game.afproject.model.data
 
 
 import android.content.Context
-import com.tromian.game.afproject.model.Actor
-import com.tromian.game.afproject.model.Genre
-import com.tromian.game.afproject.model.Movie
+import com.tromian.game.afproject.model.models.Actor
+import com.tromian.game.afproject.model.models.Genre
+import com.tromian.game.afproject.model.models.Movie
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -61,7 +61,7 @@ internal fun parseMovies(
     val genresMap = genreData.associateBy(Genre::id)
     val actorsMap = actors.associateBy(Actor::id)
 
-    val jsonMovies = jsonFormat.decodeFromString<List<JsonMovie>>(jsonString)
+    val jsonMovies = jsonFormat.decodeFromString<List<JsonMovieOld>>(jsonString)
 
     return jsonMovies.map { jsonMovie ->
         @Suppress("unused")
@@ -75,9 +75,7 @@ internal fun parseMovies(
                 reviewCount = jsonMovie.votesCount,
                 pgAge = if (jsonMovie.adult) 16 else 13,
                 runningTime = jsonMovie.runtime,
-                genres = jsonMovie.genreIds.map { id ->
-                    genresMap[id].orThrow { IllegalArgumentException("Genre not found") }
-                },
+                genreIds = jsonMovie.genreIds,
                 actors = jsonMovie.actors.map { id ->
                     actorsMap[id].orThrow { IllegalArgumentException("Actor not found") }
                 },

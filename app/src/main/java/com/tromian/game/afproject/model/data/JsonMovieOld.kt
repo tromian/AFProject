@@ -1,10 +1,10 @@
-package com.tromian.game.afproject.data
+package com.tromian.game.afproject.model.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class JsonMovie(
+internal class JsonMovieOld(
         val id: Int,
         val title: String,
         @SerialName("poster_path")
@@ -21,4 +21,5 @@ internal class JsonMovie(
         val votesCount: Int,
         val overview: String,
         val adult: Boolean
+
 )
