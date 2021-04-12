@@ -15,25 +15,35 @@ import com.tromian.game.afproject.SomeItemClickListener
 import com.tromian.game.afproject.ui.adapters.ActorsListAdapter
 import com.tromian.game.afproject.model.models.Movie
 import com.tromian.game.afproject.ui.MainActivity
+import com.tromian.game.afproject.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.viewmodels.MoviesViewModel
 
 class FragmentMoviesDetails(val itemId: Int) : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
-    lateinit var viewModel: MoviesViewModel
+    lateinit var viewModel: MovieDetailsViewModel
+    lateinit var listViewModel: MoviesViewModel
     private lateinit var movie: Movie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel = (activity as MainActivity).moviesViewModel
-        movie = viewModel.movieList.value?.get(itemId) as Movie
+        listViewModel = (activity as MainActivity).moviesViewModel
+        viewModel = (activity as MainActivity).movieDetailsViewModel
+
+        // Get Movie by id from list in MoviesViewModel
+        movie = listViewModel.movieList.value?.get(itemId) as Movie
+
+
+        movie.id?.let { viewModel.getActors(it) }
 
         bind(view)
-
-        val listActors = movie.actors
 
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rvActorsList)
         val adapter = ActorsListAdapter(requireContext())
 
-        adapter.submitList(listActors)
+        viewModel.actorList.observe(requireActivity(), {
+            adapter.submitList(it)
+        })
+
+
 
         rvActorsList.adapter = adapter
         rvActorsList.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)

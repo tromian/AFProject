@@ -6,6 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tromian.game.afproject.AppConstants
 import com.tromian.game.afproject.model.data.NowPlaying
 import com.tromian.game.afproject.model.models.Movie
 import com.tromian.game.afproject.model.repository.MoviesRepository
@@ -23,31 +24,14 @@ class MoviesViewModel(
     var movieList = MutableLiveData<List<Movie>>()
 
     init {
+        Log.d(AppConstants.LOG,"init MoviesViewModel")
         getMovies()
     }
 
-
     fun getMovies() = viewModelScope.launch(Dispatchers.IO) {
-        val list = repository.nowPlaying()
-        list.enqueue(object : Callback<NowPlaying>{
-            override fun onResponse(call: Call<NowPlaying>, response: Response<NowPlaying>) {
-                if (response.isSuccessful){
-                    movieList.postValue(
-                        response.body()!!.results.map {
-                            Movie(
-                                title = it.title
-                            )
-                        }
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<NowPlaying>, t: Throwable) {
-               Log.d("MyLog", t.message.toString())
-            }
-
-        })
-
+        Log.d(AppConstants.LOG,"start Coroutine getMovies")
+        movieList.postValue(repository.nowPlaying())
+        Log.d(AppConstants.LOG,"end Coroutine getMovies")
     }
 
 }

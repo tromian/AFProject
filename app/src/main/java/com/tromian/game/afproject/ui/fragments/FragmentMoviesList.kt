@@ -1,11 +1,13 @@
 package com.tromian.game.afproject.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.tromian.game.afproject.AppConstants
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.ui.adapters.MovieListAdapter
 import com.tromian.game.afproject.ui.MainActivity
@@ -18,10 +20,12 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(AppConstants.LOG,"start onViewCreated in FragmentMoviesList")
         viewModel = (activity as MainActivity).moviesViewModel
 
 
         val adapter = MovieListAdapter() { itemId ->
+            Log.d(AppConstants.LOG,"init adapter FragmentMoviesList")
             openFragment(itemId)
         }
 

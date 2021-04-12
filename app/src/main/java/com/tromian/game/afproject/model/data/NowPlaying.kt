@@ -6,13 +6,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NowPlaying(
     @SerializedName("dates")
-        val dates: Dates,
+        val dates: Dates? = null,
     @SerializedName("page")
-        val page: Int,
+        val page: Int? = null,
     @SerializedName("results")
-        val results: List<JsonMovie>,
+        val results: List<JsonMovie>? = null,
     @SerializedName("total_pages")
-        val total_pages: Int,
+        val total_pages: Int? = null,
     @SerializedName("total_results")
-        val total_results: Int
+        val total_results: Int? = null
 )
