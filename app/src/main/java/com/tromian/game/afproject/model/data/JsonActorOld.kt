@@ -1,0 +1,12 @@
+package com.tromian.game.afproject.model.data
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+internal class JsonActorOld(
+        val id: Int,
+        val name: String,
+        @SerialName("profile_path")
+        val profilePicture: String
+)

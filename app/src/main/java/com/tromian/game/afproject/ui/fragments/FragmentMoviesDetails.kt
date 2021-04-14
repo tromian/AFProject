@@ -3,10 +3,13 @@ package com.tromian.game.afproject.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,18 +21,22 @@ import com.tromian.game.afproject.ui.MainActivity
 import com.tromian.game.afproject.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.viewmodels.MoviesViewModel
 
-class FragmentMoviesDetails(val itemId: Int) : Fragment(R.layout.fragment_movie_details) {
+class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
-    lateinit var viewModel: MovieDetailsViewModel
-    lateinit var listViewModel: MoviesViewModel
+    private lateinit var viewModel: MovieDetailsViewModel
+    private lateinit var listViewModel: MoviesViewModel
     private lateinit var movie: Movie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         listViewModel = (activity as MainActivity).moviesViewModel
         viewModel = (activity as MainActivity).movieDetailsViewModel
 
+        val id = arguments?.getInt("ItemId")
+
+        movie = id?.let { listViewModel.movieList.value?.get(it) } as Movie
+        Log.d("Bundle", id.toString() + "Detail")
         // Get Movie by id from list in MoviesViewModel
-        movie = listViewModel.movieList.value?.get(itemId) as Movie
+
 
 
         movie.id?.let { viewModel.getActors(it) }

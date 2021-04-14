@@ -1,10 +1,12 @@
 package com.tromian.game.afproject.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.AppConstants
@@ -25,7 +27,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
 
         val adapter = MovieListAdapter() { itemId ->
-            Log.d(AppConstants.LOG,"init adapter FragmentMoviesList")
             openFragment(itemId)
         }
 
@@ -42,14 +43,17 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private fun openFragment(itemId: Int) {
         val movie = viewModel.movieList.value?.get(itemId)
-        val activity = requireActivity() as MainActivity
-
-        if (movie != null) {
-            activity.supportFragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .add(R.id.main_container, FragmentMoviesDetails(itemId), MainActivity.FRAGMENT_TAG)
-                    .commit()
-        }
+        val bundle = Bundle()
+        bundle.putInt("ItemId",itemId)
+        findNavController().navigate(R.id.fragmentMoviesDetails,bundle)
+//        val activity = requireActivity() as MainActivity
+//        if (movie != null) {
+//            activity.supportFragmentManager
+//                    .beginTransaction()
+//                    .addToBackStack(null)
+//                    .add(R.id.main_container, FragmentMoviesDetails(), MainActivity.FRAGMENT_DETAIL)
+//                    .commit()
+//        }
 
     }
 

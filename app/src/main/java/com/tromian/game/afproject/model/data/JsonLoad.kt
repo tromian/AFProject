@@ -43,7 +43,7 @@ private suspend fun loadActors(context: Context): List<Actor> = withContext(Disp
 }
 
 internal fun parseActors(jsonString: String): List<Actor> {
-    val jsonActors = jsonFormat.decodeFromString<List<JsonActor>>(jsonString)
+    val jsonActors = jsonFormat.decodeFromString<List<JsonActorOld>>(jsonString)
     return jsonActors.map { jsonActor ->
         Actor(
                 id = jsonActor.id,

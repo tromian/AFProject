@@ -1,12 +1,32 @@
 package com.tromian.game.afproject.model.data
 
-import kotlinx.serialization.SerialName
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-internal class JsonActor(
-        val id: Int,
-        val name: String,
-        @SerialName("profile_path")
-        val profilePicture: String
+data class JsonActor(
+        @SerializedName("adult")
+    val adult: Boolean,
+        @SerializedName("cast_id")
+    val cast_id: Int,
+        @SerializedName("character")
+    val character: String,
+        @SerializedName("credit_id")
+    val credit_id: String,
+        @SerializedName("gender")
+    val gender: Int,
+        @SerializedName("id")
+    val id: Int,
+        @SerializedName("known_for_department")
+    val known_for_department: String,
+        @SerializedName("name")
+    val name: String,
+        @SerializedName("order")
+    val order: Int,
+        @SerializedName("original_name")
+    val original_name: String,
+        @SerializedName("popularity")
+    val popularity: Double,
+        @SerializedName("profile_path")
+    val profile_path: String
 )
