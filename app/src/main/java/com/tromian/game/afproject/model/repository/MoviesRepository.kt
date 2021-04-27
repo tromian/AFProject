@@ -1,81 +1,118 @@
 package com.tromian.game.afproject.model.repository
 
-import android.content.Context
+
 import android.util.Log
+
 import com.tromian.game.afproject.AppConstants
 import com.tromian.game.afproject.model.Resource
-import com.tromian.game.afproject.model.data.loadMovies
 import com.tromian.game.afproject.model.models.Actor
+import com.tromian.game.afproject.model.models.Genre
 import com.tromian.game.afproject.model.models.Movie
 import com.tromian.game.afproject.model.tmdbapi.ApiFactory
-import com.tromian.game.afproject.model.tmdbapi.ConfigurationResponse
+import com.tromian.game.afproject.model.tmdbapi.ResponseWrapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class MoviesRepository : BaseRepository(){
 
-    suspend fun getMoviesList(context: Context) : List<Movie>{
-        return loadMovies(context)
+class MoviesRepository {
+
+    var genres: List<Genre>? = null
+
+    init {
+        if (genres == null) {
+            GlobalScope.launch(Dispatchers.IO) {
+                genres = getGenres()
+            }
+        }
     }
 
-    suspend fun getCasts(movieId : Int) : List<Actor> {
-        val result = safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
-        return when(result) {
-            is Resource.Success -> result.data.cast.map {
+    suspend fun getCasts(movieId: Int): List<Actor> {
+        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
+        return when (result) {
+            is Resource.Success -> result.data.actorList.map {
                 Actor(
                         id = it.id,
                         name = it.name,
-                        imageUrl = AppConstants.POSTER_URL + AppConstants.PROFILE_SIZE + it.profile_path
+                        imageUrl = getProfilePictureUrl() + it.profilePath
                 )
             }
             is Resource.Error -> {
-                Log.d("MyLog",result.message.toString())
+                Log.d("MyLog", result.message)
                 emptyList()
             }
 
         }
     }
 
-    suspend fun nowPlaying() : List<Movie> {
-        Log.d(AppConstants.LOG,"start nowPlaying in repository")
-        val result = safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
-        return when(result) {
-            is Resource.Success -> result.data.results!!.map {
-                Log.d(AppConstants.LOG,"start mapping to Movie")
-                Log.d(AppConstants.LOG,it.toString())
+    suspend fun getGenres(): List<Genre> {
+        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
+        return when (result) {
+            is Resource.Success -> result.data.genres!!.map {
+                Genre(
+                        id = it.id,
+                        name = it.name.toString()
+                )
+            }
+            is Resource.Error -> {
+                Log.d("MyLog", result.message)
+                emptyList()
+            }
+
+        }
+
+    }
+
+    suspend fun nowPlaying(): List<Movie> {
+        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
+        return when (result) {
+            is Resource.Success -> result.data.movieList!!.map {
+
                 Movie(
                         id = it.id,
                         title = it.title,
-                        imageUrl = AppConstants.POSTER_URL + AppConstants.POSTER_SIZE +it.posterPath,
-                        reviewCount = it.vote_count,
-                        pgAge = if (it.adult == true) 16 else 13,
+                        genres = it.genreIds?.let { it1 -> loadGenres(it1) },
+                        imageUrl = getPosterUrl() + it.posterPath,
+                        reviewCount = it.voteCount,
+                        pgAge = it.adult?.let { it1 -> checkAdultContent(it1) },
                         rating = it.voteAverage?.toInt(),
                         storyLine = it.overview
                 )
 
             }
             is Resource.Error -> {
-                Log.d("MyLog",result.message.toString())
+                Log.d("MyLog", result.message)
                 emptyList()
             }
-            }
         }
+    }
 
+    private fun getPosterUrl(): String {
+        return AppConstants.IMAGES_BASE_URL + AppConstants.POSTER_SIZE
+    }
 
-//    suspend fun nowPlaying() = ApiFactory.tmdbApi.getNowPlaying()
-//            .body()!!.results!!
-//            .map {
-//                Movie(
-//                        id = it.id,
-//                        title = it.title,
-//                        imageUrl = "https://image.tmdb.org/t/p/w500/"+it.posterPath,
-//                        reviewCount = it.vote_count,
-//                        pgAge = if (it.adult) 16 else 13,
-//                        rating = it.voteAverage.toInt(),
-//                        storyLine = it.overview
-//
-//                )
-//            }
+    private fun getProfilePictureUrl(): String {
+        return AppConstants.IMAGES_BASE_URL + AppConstants.PROFILE_SIZE
+    }
 
+    private fun checkAdultContent(adult: Boolean): Int {
+        return if (adult) AppConstants.ADULT_CONTENT_AGE
+        else AppConstants.NOT_ADULT_CONTENT_AGE
+    }
 
+    private fun loadGenres(genreIds: List<Int>): String {
+        return if (genres != null) {
+            var result = ""
+            genreIds.forEach { id ->
+                genres!!.forEach { genre ->
+                    if (id == genre.id) {
+                        result += genre.name + " "
+                    }
+                }
+            }
+            result
+        } else return ""
+    }
 
 
 }

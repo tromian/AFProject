@@ -54,5 +54,5 @@ data class Result(
     @SerializedName("vote_average")
     val voteAverage: Double? = null,
     @SerializedName("vote_count")
-    val vote_count: Int? = null
+    val voteCount: Int? = null
 )

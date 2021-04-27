@@ -24,14 +24,12 @@ class MoviesViewModel(
     var movieList = MutableLiveData<List<Movie>>()
 
     init {
-        Log.d(AppConstants.LOG,"init MoviesViewModel")
         getMovies()
     }
 
     fun getMovies() = viewModelScope.launch(Dispatchers.IO) {
-        Log.d(AppConstants.LOG,"start Coroutine getMovies")
         movieList.postValue(repository.nowPlaying())
-        Log.d(AppConstants.LOG,"end Coroutine getMovies")
+
     }
 
 }

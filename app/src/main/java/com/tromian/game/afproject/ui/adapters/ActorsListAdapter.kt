@@ -47,7 +47,7 @@ class ActorsListAdapter(private val context: Context) :
                     .into(avatar)
 
             name.text = actor.name
-            Log.d(TAG, actor.name)
+            Log.d(TAG, actor.name.toString())
         }
     }
 

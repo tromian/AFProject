@@ -7,7 +7,7 @@ data class Movie(
         val id: Int? = null,
         val pgAge: Int?= null,
         val title: String?= null,
-        val genreIds: List<Int>?= null,
+        val genres: String?= null,
         val runningTime: Int?= null,
         val reviewCount: Int?= null,
         val isLiked: Boolean?= null,

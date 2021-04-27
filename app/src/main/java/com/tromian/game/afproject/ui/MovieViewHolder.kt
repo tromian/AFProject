@@ -1,6 +1,7 @@
 package com.tromian.game.afproject.ui
 
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,10 +26,11 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val star5: ImageView = itemView.findViewById(R.id.star5)
 
 
+    @SuppressLint("SetTextI18n")
     fun bind(movie: Movie) {
         title.text = movie.title
         legalAge.text = movie.pgAge.toString() + "+"
-        category.text = movie.genreIds.toString()
+        category.text = movie.genres
         reviews.text = "${movie.reviewCount} Reviews"
         runtime.text = "${movie.runningTime} MIN"
         movie.rating?.let { showRating(it) }

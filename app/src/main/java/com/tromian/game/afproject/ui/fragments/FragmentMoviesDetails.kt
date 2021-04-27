@@ -95,7 +95,7 @@ class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details) {
         title.text = movie.title
         storyline.text = movie.storyLine
         age.text = movie.pgAge.toString() + "+"
-        tags.text = movie.genreIds.toString()
+        tags.text = movie.genres
         reviews.text = "${movie.reviewCount} Reviews"
 
     }

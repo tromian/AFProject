@@ -22,7 +22,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(AppConstants.LOG,"start onViewCreated in FragmentMoviesList")
         viewModel = (activity as MainActivity).moviesViewModel
 
 

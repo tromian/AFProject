@@ -17,9 +17,5 @@
     <fragment
         android:id="@+id/fragmentMoviesDetails"
         android:name="com.tromian.game.afproject.ui.fragments.FragmentMoviesDetails"
-        android:label="FragmentMoviesDetails" >
-        <argument
-            android:name="ItemId"
-            app:argType="integer" />
-    </fragment>
+        android:label="FragmentMoviesDetails" />
 </navigation>
