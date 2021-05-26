@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/fragmentMoviesList"
-        android:name="com.tromian.game.afproject.ui.fragments.FragmentMoviesList"
+        android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesList"
         android:label="FragmentMoviesList" >
         <action
             android:id="@+id/action_fragmentMoviesList_to_fragmentMoviesDetails"
@@ -16,6 +16,6 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentMoviesDetails"
-        android:name="com.tromian.game.afproject.ui.fragments.FragmentMoviesDetails"
+        android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesDetails"
         android:label="FragmentMoviesDetails" />
 </navigation>

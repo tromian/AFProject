@@ -1,8 +1,5 @@
 package com.tromian.game.afproject
 
-import com.tromian.game.afproject.model.models.Genre
-import com.tromian.game.afproject.model.tmdbapi.ApiFactory
-
 class AppConstants {
     companion object {
         var TMDB_API_KEY = BuildConfig.TMDB_API_KEY
