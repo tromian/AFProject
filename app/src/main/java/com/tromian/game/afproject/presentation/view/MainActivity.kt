@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.SomeItemClickListener
-import com.tromian.game.afproject.domain.repository.MoviesRepository
+import com.tromian.game.afproject.data.repository.MoviesDataRepository
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsVMFactory
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val repository = MoviesRepository()
+        val repository = MoviesDataRepository()
         val viewModelFactory = MoviesViewModelProviderFactory(application, repository)
         val detailViewModelFactory = MovieDetailsVMFactory(application, repository)
         moviesViewModel = ViewModelProvider(this, viewModelFactory).get(MoviesViewModel::class.java)
