@@ -31,6 +31,7 @@ class MoviesDataRepository : MoviesRepository {
         }
     }
 
+    
     override suspend fun getCasts(movieId: Int): List<Actor> {
         val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
         return when (result) {
@@ -81,6 +82,7 @@ class MoviesDataRepository : MoviesRepository {
             }
         }
     }
+
 
     private fun getPosterUrl(): String {
         return AppConstants.IMAGES_BASE_URL + AppConstants.POSTER_SIZE
