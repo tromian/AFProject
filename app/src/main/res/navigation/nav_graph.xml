@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentMoviesList">
+
+    <fragment
+        android:id="@+id/fragmentMoviesList"
+        android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesList"
+        android:label="FragmentMoviesList" >
+        <action
+            android:id="@+id/action_fragmentMoviesList_to_fragmentMoviesDetails"
+            app:destination="@id/fragmentMoviesDetails" />
+        <argument
+            android:name="ItemId"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentMoviesDetails"
+        android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesDetails"
+        android:label="FragmentMoviesDetails" />
+</navigation>
