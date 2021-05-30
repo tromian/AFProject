@@ -38,7 +38,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     }
 
     private fun openFragment(itemId: Int) {
-        val movie = viewModel.movieList.value?.get(itemId)
+        //val movie = viewModel.movieList.value?.get(itemId)
         val bundle = Bundle()
         bundle.putInt("ItemId",itemId)
         findNavController().navigate(R.id.fragmentMoviesDetails,bundle)

@@ -43,7 +43,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
 
-    fun showRating(rating: Int) = when (rating) {
+    private fun showRating(rating: Int) = when (rating) {
         1 -> star1.setImageResource(R.drawable.ic_star_icon_fill)
 
         2 -> {

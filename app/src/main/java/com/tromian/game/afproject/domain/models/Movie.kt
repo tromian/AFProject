@@ -4,9 +4,9 @@ package com.tromian.game.afproject.domain.models
 import java.io.Serializable
 
 data class Movie(
-        val id: Int? = null,
+        val id: Int,
         val pgAge: Int?= null,
-        val title: String?= null,
+        val title: String,
         val genres: String?= null,
         val runningTime: Int?= null,
         val reviewCount: Int?= null,
@@ -14,6 +14,5 @@ data class Movie(
         val rating: Int?= null,
         val imageUrl: String?= null,
         val detailImageUrl: String?= null,
-        val storyLine: String?= null,
-        val actors: List<Actor>?= null,
+        val storyLine: String
 ) : Serializable

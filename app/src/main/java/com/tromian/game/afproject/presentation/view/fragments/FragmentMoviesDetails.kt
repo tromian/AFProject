@@ -19,7 +19,7 @@ import com.tromian.game.afproject.presentation.view.MainActivity
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 
-class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details) {
+class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
     private lateinit var viewModel: MovieDetailsViewModel
     private lateinit var listViewModel: MoviesViewModel
@@ -32,12 +32,8 @@ class FragmentMoviesDetails() : Fragment(R.layout.fragment_movie_details) {
         val id = arguments?.getInt("ItemId")
 
         movie = id?.let { listViewModel.movieList.value?.get(it) } as Movie
-        Log.d("Bundle", id.toString() + "Detail")
-        // Get Movie by id from list in MoviesViewModel
 
-
-
-        movie.id?.let { viewModel.getActors(it) }
+        viewModel.getActors(movie.id)
 
         bind(view)
 

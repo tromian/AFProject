@@ -3,7 +3,7 @@ package com.tromian.game.afproject.domain.models
 import java.io.Serializable
 
 data class Actor(
-        val id: Int? = null,
-        val name: String? = null,
+        val id: Int,
+        val name: String,
         val imageUrl: String? = null,
 ) : Serializable

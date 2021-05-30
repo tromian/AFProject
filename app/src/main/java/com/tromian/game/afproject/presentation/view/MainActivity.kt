@@ -2,14 +2,11 @@ package com.tromian.game.afproject.presentation.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.SomeItemClickListener
 import com.tromian.game.afproject.data.repository.MoviesDataRepository
-import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsVMFactory
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
-import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModelProviderFactory
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickListener {
 
@@ -26,10 +23,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickLis
         super.onCreate(savedInstanceState)
 
         val repository = MoviesDataRepository()
-        val viewModelFactory = MoviesViewModelProviderFactory(application, repository)
-        val detailViewModelFactory = MovieDetailsVMFactory(application, repository)
-        moviesViewModel = ViewModelProvider(this, viewModelFactory).get(MoviesViewModel::class.java)
-        movieDetailsViewModel = ViewModelProvider(this,detailViewModelFactory).get(MovieDetailsViewModel::class.java)
+        moviesViewModel = MoviesViewModel(repository)
+        movieDetailsViewModel = MovieDetailsViewModel(repository)
 
 
 //        if (savedInstanceState == null) {

@@ -8,7 +8,12 @@ object ResponseWrapper {
 
     fun <T> safeApiResponse(apiMethod: Response<T>): Resource<T> {
         return if (apiMethod.isSuccessful) {
-            Resource.Success(apiMethod.body()!!)
+            val newBody: T? = apiMethod.body()
+            if (newBody != null){
+                Resource.Success(newBody)
+            }else {
+                Resource.Error(apiMethod.message())
+            }
         } else Resource.Error(apiMethod.message())
     }
 

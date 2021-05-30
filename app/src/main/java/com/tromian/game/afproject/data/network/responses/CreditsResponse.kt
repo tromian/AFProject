@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CreditsResponse(
     @SerializedName("cast")
-    val actorList: List<JsonActor>,
+    val actorList: List<JsonActor>? = null,
     @SerializedName("id")
-    val id: Int
+    val id: Int? = null
 )
