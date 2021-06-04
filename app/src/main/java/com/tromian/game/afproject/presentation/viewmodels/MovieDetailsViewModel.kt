@@ -11,10 +11,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(
+        val movieId: Int,
         val repository : MoviesRepository
 ) : ViewModel() {
 
     var actorList = MutableLiveData<List<Actor>>()
+
+    init {
+        getActors(movieId)
+    }
 
     fun getActors(movieId : Int) = viewModelScope.launch(Dispatchers.IO) {
         actorList.postValue(repository.getCasts(movieId))

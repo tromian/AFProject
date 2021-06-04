@@ -1,4 +1,4 @@
-package com.tromian.game.afproject.data.models
+package com.tromian.game.afproject.data.network.models
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable

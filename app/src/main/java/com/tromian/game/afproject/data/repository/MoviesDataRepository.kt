@@ -4,9 +4,9 @@ package com.tromian.game.afproject.data.repository
 import android.util.Log
 
 import com.tromian.game.afproject.AppConstants
-import com.tromian.game.afproject.data.models.JsonActor
-import com.tromian.game.afproject.data.models.JsonGenre
-import com.tromian.game.afproject.data.models.JsonMovie
+import com.tromian.game.afproject.data.network.models.JsonActor
+import com.tromian.game.afproject.data.network.models.JsonGenre
+import com.tromian.game.afproject.data.network.models.JsonMovie
 import com.tromian.game.afproject.domain.Resource
 import com.tromian.game.afproject.domain.models.Actor
 import com.tromian.game.afproject.domain.models.Genre

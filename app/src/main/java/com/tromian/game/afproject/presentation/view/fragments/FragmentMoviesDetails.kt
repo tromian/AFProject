@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.SomeItemClickListener
+import com.tromian.game.afproject.data.repository.MoviesDataRepository
 import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.presentation.view.MainActivity
@@ -21,26 +22,27 @@ import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
-    private lateinit var viewModel: MovieDetailsViewModel
+    private lateinit var repository: MoviesDataRepository
     private lateinit var listViewModel: MoviesViewModel
     private lateinit var movie: Movie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         listViewModel = (activity as MainActivity).moviesViewModel
-        viewModel = (activity as MainActivity).movieDetailsViewModel
-
+        repository = (activity as MainActivity).repository
         val id = arguments?.getInt("ItemId")
+
+        val viewModel = id?.let { MovieDetailsViewModel(it,repository) }
 
         movie = id?.let { listViewModel.movieList.value?.get(it) } as Movie
 
-        viewModel.getActors(movie.id)
+        //viewModel?.getActors(movie.id)
 
         bind(view)
 
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rvActorsList)
         val adapter = ActorsListAdapter(requireContext())
 
-        viewModel.actorList.observe(requireActivity(), {
+        viewModel?.actorList?.observe(requireActivity(), {
             adapter.submitList(it)
         })
 
