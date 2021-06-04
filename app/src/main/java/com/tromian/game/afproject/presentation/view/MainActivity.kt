@@ -11,14 +11,12 @@ import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickListener {
 
 
-    lateinit var moviesViewModel: MoviesViewModel
     lateinit var repository: MoviesDataRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         repository = MoviesDataRepository()
-        moviesViewModel = MoviesViewModel(repository)
 
 
     }

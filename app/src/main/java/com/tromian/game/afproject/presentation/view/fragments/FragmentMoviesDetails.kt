@@ -23,29 +23,24 @@ import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
     private lateinit var repository: MoviesDataRepository
-    private lateinit var listViewModel: MoviesViewModel
     private lateinit var movie: Movie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        listViewModel = (activity as MainActivity).moviesViewModel
+
         repository = (activity as MainActivity).repository
-        val id = arguments?.getInt("ItemId")
+        movie = arguments?.getSerializable("movie") as Movie
+        val movieId = movie.id
+        val viewModel = MovieDetailsViewModel(movieId,repository)
 
-        val viewModel = id?.let { MovieDetailsViewModel(it,repository) }
-
-        movie = id?.let { listViewModel.movieList.value?.get(it) } as Movie
-
-        //viewModel?.getActors(movie.id)
 
         bind(view)
 
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rvActorsList)
         val adapter = ActorsListAdapter(requireContext())
 
-        viewModel?.actorList?.observe(requireActivity(), {
+        viewModel.actorList.observe(requireActivity(), {
             adapter.submitList(it)
         })
-
 
 
         rvActorsList.adapter = adapter
