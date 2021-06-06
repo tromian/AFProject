@@ -161,7 +161,7 @@ class MoviesDataRepository : MoviesRepository {
                         imageUrl = getPosterUrl() + it.posterPath,
                         reviewCount = it.voteCount,
                         pgAge = it.adult?.let { adult -> checkAdultContent(adult) },
-                        rating = it.voteAverage?.toInt(),
+                        rating = (it.voteAverage?.div(2))?.toInt(),
                         storyLine = newOverview
                     )
                 )

@@ -42,7 +42,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         val bundle = Bundle()
         val movie = viewModel.movieList.value?.get(itemId)
         bundle.putSerializable("movie",movie)
-        //bundle.putInt("ItemId",itemId)
         findNavController().navigate(R.id.fragmentMoviesDetails,bundle)
 
     }

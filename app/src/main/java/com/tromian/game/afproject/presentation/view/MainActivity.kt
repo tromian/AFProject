@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.tromian.game.afproject.R
@@ -15,9 +16,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         repository = MoviesDataRepository()
-
 
     }
 
