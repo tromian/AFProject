@@ -80,7 +80,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTag"
-            app:srcCompat="@drawable/star_icon_fill" />
+            app:srcCompat="@drawable/star_icon" />
 
         <ImageView
             android:id="@+id/ivStar2"
@@ -90,7 +90,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/ivStar1"
             app:layout_constraintTop_toBottomOf="@+id/tvTag"
-            app:srcCompat="@drawable/star_icon_fill" />
+            app:srcCompat="@drawable/star_icon" />
 
         <ImageView
             android:id="@+id/ivStar3"
@@ -100,7 +100,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/ivStar2"
             app:layout_constraintTop_toBottomOf="@+id/tvTag"
-            app:srcCompat="@drawable/star_icon_fill" />
+            app:srcCompat="@drawable/star_icon" />
 
         <ImageView
             android:id="@+id/ivStar4"
@@ -110,7 +110,7 @@
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toEndOf="@+id/ivStar3"
             app:layout_constraintTop_toBottomOf="@+id/tvTag"
-            app:srcCompat="@drawable/star_icon_fill" />
+            app:srcCompat="@drawable/star_icon" />
 
 
         <ImageView

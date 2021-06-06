@@ -4,9 +4,9 @@ package com.tromian.game.afproject.data.repository
 import android.util.Log
 
 import com.tromian.game.afproject.AppConstants
-import com.tromian.game.afproject.data.models.JsonActor
-import com.tromian.game.afproject.data.models.JsonGenre
-import com.tromian.game.afproject.data.models.JsonMovie
+import com.tromian.game.afproject.data.network.models.JsonActor
+import com.tromian.game.afproject.data.network.models.JsonGenre
+import com.tromian.game.afproject.data.network.models.JsonMovie
 import com.tromian.game.afproject.domain.Resource
 import com.tromian.game.afproject.domain.models.Actor
 import com.tromian.game.afproject.domain.models.Genre
@@ -161,7 +161,7 @@ class MoviesDataRepository : MoviesRepository {
                         imageUrl = getPosterUrl() + it.posterPath,
                         reviewCount = it.voteCount,
                         pgAge = it.adult?.let { adult -> checkAdultContent(adult) },
-                        rating = it.voteAverage?.toInt(),
+                        rating = (it.voteAverage?.div(2))?.toInt(),
                         storyLine = newOverview
                     )
                 )

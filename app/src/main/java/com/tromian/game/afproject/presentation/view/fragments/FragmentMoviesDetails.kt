@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.SomeItemClickListener
+import com.tromian.game.afproject.data.repository.MoviesDataRepository
 import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.presentation.view.MainActivity
@@ -21,19 +22,16 @@ import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
-    private lateinit var viewModel: MovieDetailsViewModel
-    private lateinit var listViewModel: MoviesViewModel
+    private lateinit var repository: MoviesDataRepository
     private lateinit var movie: Movie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        listViewModel = (activity as MainActivity).moviesViewModel
-        viewModel = (activity as MainActivity).movieDetailsViewModel
 
-        val id = arguments?.getInt("ItemId")
+        repository = (activity as MainActivity).repository
+        movie = arguments?.getSerializable("movie") as Movie
+        val movieId = movie.id
+        val viewModel = MovieDetailsViewModel(movieId, repository)
 
-        movie = id?.let { listViewModel.movieList.value?.get(it) } as Movie
-
-        viewModel.getActors(movie.id)
 
         bind(view)
 
@@ -43,7 +41,6 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         viewModel.actorList.observe(requireActivity(), {
             adapter.submitList(it)
         })
-
 
 
         rvActorsList.adapter = adapter
@@ -80,10 +77,16 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         val storyline: TextView = view.findViewById(R.id.storylineText)
         val reviews: TextView = view.findViewById(R.id.tvReviews)
 
+        val star1: ImageView = view.findViewById(R.id.ivStar1)
+        val star2: ImageView = view.findViewById(R.id.ivStar2)
+        val star3: ImageView = view.findViewById(R.id.ivStar3)
+        val star4: ImageView = view.findViewById(R.id.ivStar4)
+        val star5: ImageView = view.findViewById(R.id.ivStar5)
+
         Glide.with(view.context)
-                .load(movie.imageUrl)
-                .error(R.drawable.film_placeholder)
-                .into(poster)
+            .load(movie.imageUrl)
+            .error(R.drawable.film_placeholder)
+            .into(poster)
 
         age.text = movie.pgAge.toString()
         title.text = movie.title
@@ -91,8 +94,38 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         age.text = movie.pgAge.toString() + "+"
         tags.text = movie.genres
         reviews.text = "${movie.reviewCount} Reviews"
+        movie.rating?.let {
+            when (it) {
+                1 -> star1.setImageResource(R.drawable.ic_star_icon_fill)
+
+                2 -> {
+                    star1.setImageResource(R.drawable.ic_star_icon_fill)
+                    star2.setImageResource(R.drawable.ic_star_icon_fill)
+                }
+                3 -> {
+                    star1.setImageResource(R.drawable.ic_star_icon_fill)
+                    star2.setImageResource(R.drawable.ic_star_icon_fill)
+                    star3.setImageResource(R.drawable.ic_star_icon_fill)
+                }
+                4 -> {
+                    star1.setImageResource(R.drawable.ic_star_icon_fill)
+                    star2.setImageResource(R.drawable.ic_star_icon_fill)
+                    star3.setImageResource(R.drawable.ic_star_icon_fill)
+                    star4.setImageResource(R.drawable.ic_star_icon_fill)
+                }
+                5 -> {
+                    star1.setImageResource(R.drawable.ic_star_icon_fill)
+                    star2.setImageResource(R.drawable.ic_star_icon_fill)
+                    star3.setImageResource(R.drawable.ic_star_icon_fill)
+                    star4.setImageResource(R.drawable.ic_star_icon_fill)
+                    star5.setImageResource(R.drawable.ic_star_icon_fill)
+                }
+                else -> {
+                }
+
+            }
+
+        }
 
     }
-
-
 }

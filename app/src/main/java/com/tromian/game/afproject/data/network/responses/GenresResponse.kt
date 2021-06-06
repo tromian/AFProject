@@ -1,6 +1,6 @@
 package com.tromian.game.afproject.data.network.responses
 
-import com.tromian.game.afproject.data.models.JsonGenre
+import com.tromian.game.afproject.data.network.models.JsonGenre
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -1,7 +1,7 @@
 package com.tromian.game.afproject.data.network.responses
 
 import com.google.gson.annotations.SerializedName
-import com.tromian.game.afproject.data.models.JsonMovie
+import com.tromian.game.afproject.data.network.models.JsonMovie
 import kotlinx.serialization.Serializable
 
 @Serializable
