@@ -161,7 +161,7 @@ class MoviesDataRepository : MoviesRepository {
                         imageUrl = getPosterUrl() + it.posterPath,
                         reviewCount = it.voteCount,
                         pgAge = it.adult?.let { adult -> checkAdultContent(adult) },
-                        rating = (it.voteAverage?.div(2))?.toInt(),
+                        rating = ratingDoubleToInt(it.voteAverage),
                         storyLine = newOverview
                     )
                 )
@@ -170,5 +170,6 @@ class MoviesDataRepository : MoviesRepository {
         return movies
     }
 
+    private fun ratingDoubleToInt(tmdbRating: Double?) = tmdbRating?.div(2)?.toInt()
 
 }
