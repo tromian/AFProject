@@ -1,9 +1,13 @@
 package com.tromian.game.afproject.data.repository
 
 
+import android.content.Context
 import android.util.Log
 
 import com.tromian.game.afproject.AppConstants
+import com.tromian.game.afproject.MoviesApp
+import com.tromian.game.afproject.data.db.MoviesDB
+import com.tromian.game.afproject.data.db.entityes.MovieEntity
 import com.tromian.game.afproject.data.network.models.JsonActor
 import com.tromian.game.afproject.data.network.models.JsonGenre
 import com.tromian.game.afproject.data.network.models.JsonMovie
@@ -19,9 +23,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MoviesDataRepository : MoviesRepository {
+class MoviesDataRepository(context: Context) : MoviesRepository {
 
     var genres: List<Genre>? = null
+    val db = MoviesDB.getInstance(context)
 
     init {
         if (genres == null) {
@@ -81,6 +86,23 @@ class MoviesDataRepository : MoviesRepository {
                 emptyList()
             }
         }
+    }
+
+    override suspend fun saveMovieList(movies: List<Movie>) {
+        val entities = mutableListOf<MovieEntity>()
+        movies.forEach { movie ->
+            entities.add(fromMovieToMovieEntity(movie))
+        }
+        db.movieDao().insertMovies(entities)
+    }
+
+    override suspend fun getSavedMovieList(): List<Movie> {
+        val movies = mutableListOf<Movie>()
+        val entities = db.movieDao().getNowPlaying()
+        entities.forEach { entity ->
+            movies.add(fromMovieEntityToMovie(entity))
+        }
+        return movies
     }
 
 
@@ -168,6 +190,32 @@ class MoviesDataRepository : MoviesRepository {
             }
         }
         return movies
+    }
+
+    private fun fromMovieToMovieEntity(movie : Movie) : MovieEntity{
+        return MovieEntity(
+            id = movie.id,
+            title = movie.title,
+            genres = movie.genres,
+            imageUrl = movie.imageUrl,
+            reviewCount = movie.reviewCount,
+            pgAge = movie.pgAge,
+            rating = movie.rating,
+            storyLine = movie.storyLine
+        )
+    }
+
+    private fun fromMovieEntityToMovie(entity : MovieEntity) : Movie{
+        return Movie(
+            id = entity.id,
+            title = entity.title,
+            genres = entity.genres,
+            imageUrl = entity.imageUrl,
+            reviewCount = entity.reviewCount,
+            pgAge = entity.pgAge,
+            rating = entity.rating,
+            storyLine = entity.storyLine
+        )
     }
 
     private fun ratingDoubleToInt(tmdbRating: Double?) = tmdbRating?.div(2)?.toInt()

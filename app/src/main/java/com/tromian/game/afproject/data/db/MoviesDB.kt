@@ -1,6 +1,7 @@
 package com.tromian.game.afproject.data.db
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -19,13 +20,22 @@ abstract class MoviesDB : RoomDatabase() {
 
         private const val DATABASE_NAME = "movies.db"
 
-        val instance : MoviesDB by lazy {
-            Room.databaseBuilder(
-                Application().applicationContext,
-                MoviesDB::class.java,
-                DATABASE_NAME
-            ).build()
+        private var INSTANCE: MoviesDB? = null
+
+        private val lock = Any()
+
+        fun getInstance(appContext: Context): MoviesDB {
+            synchronized(lock) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(appContext,
+                        MoviesDB::class.java, DATABASE_NAME)
+                        .allowMainThreadQueries()
+                        .build()
+                }
+                return INSTANCE!!
+            }
         }
+
     }
 
 }

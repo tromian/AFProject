@@ -1,6 +1,7 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -15,21 +16,24 @@ import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
-    lateinit var viewModel: MoviesViewModel
+    private var viewModel: MoviesViewModel? = null
     private lateinit var repository: MoviesDataRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         repository = (activity as MainActivity).repository
-        viewModel = MoviesViewModel(repository)
-
+        if (viewModel == null){
+            viewModel = MoviesViewModel(repository)
+        }
         val adapter = MovieListAdapter() { itemId ->
             openFragment(itemId)
         }
+        viewModel?.let {
+            it.movieList.observe(requireActivity(), Observer {
+                adapter.submitList(it)
+            })
+        }
 
-        viewModel.movieList.observe(requireActivity(), Observer {
-            adapter.submitList(it)
-        })
 
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
 
@@ -40,11 +44,12 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private fun openFragment(itemId: Int) {
         val bundle = Bundle()
-        val movie = viewModel.movieList.value?.get(itemId)
+        val movie = viewModel?.let {
+            it.movieList.value?.get(itemId)
+        }
         bundle.putSerializable("movie",movie)
         findNavController().navigate(R.id.fragmentMoviesDetails,bundle)
 
     }
-
 
 }
