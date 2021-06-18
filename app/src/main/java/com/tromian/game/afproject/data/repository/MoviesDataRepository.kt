@@ -41,17 +41,16 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
     override suspend fun getCasts(movieId: Int): List<Actor> {
         if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
-            when (result) {
+            return when (result) {
                 is Resource.Success ->
-                    return if (result.data.actorList == null) {
+                    if (result.data.actorList == null) {
                         emptyList()
                     } else {
                         result.data.actorList.toActor()
-
                     }
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
-                    return emptyList()
+                    emptyList()
                 }
             }
 
@@ -63,9 +62,9 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
     override suspend fun getGenres(): List<Genre> {
         if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
-            when (result) {
+            return when (result) {
                 is Resource.Success ->
-                    return if (result.data.genres == null) {
+                    if (result.data.genres == null) {
                         emptyList()
                     } else {
                         result.data.genres.toGenre()
@@ -85,16 +84,16 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
     override suspend fun nowPlaying(): List<Movie> {
         if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
-            when (result) {
+            return when (result) {
                 is Resource.Success ->
-                    return if (result.data.movieList == null) {
+                    if (result.data.movieList == null) {
                         emptyList()
                     } else {
                         result.data.movieList.toMovie()
                     }
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
-                    return emptyList()
+                    emptyList()
                 }
             }
 
