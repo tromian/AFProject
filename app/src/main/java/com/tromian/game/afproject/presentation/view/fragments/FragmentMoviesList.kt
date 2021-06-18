@@ -1,17 +1,15 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.data.repository.MoviesDataRepository
-import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.view.MainActivity
+import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
@@ -21,7 +19,10 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        repository = (activity as MainActivity).repository
+
+        (activity as MainActivity).repository?.let {
+            repository = it
+        }
         if (viewModel == null){
             viewModel = MoviesViewModel(repository)
         }
@@ -38,7 +39,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
 
         rvMovieList.adapter = adapter
-        rvMovieList.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
 
     }
 

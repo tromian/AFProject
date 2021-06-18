@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
 class MoviesViewModel(
        val repository : MoviesRepository
@@ -20,25 +22,24 @@ class MoviesViewModel(
         loadNowPlaying()
     }
 
-    fun loadNowPlaying() = viewModelScope.launch{
-        val localData: List<Movie> = repository.getSavedMovieList()
+    fun loadNowPlaying() = viewModelScope.launch(Dispatchers.IO){
+        val localData: List<Movie> = withContext(Dispatchers.IO){
+            repository.getSavedMovieList()
+        }
 
         if (localData.isNotEmpty()){
             movieList.postValue(localData)
         }
         val remoteData: List<Movie> = withContext(Dispatchers.IO){
-            repository.nowPlaying()
+                repository.nowPlaying()
         }
 
         if (remoteData.isNotEmpty()){
-            delay(5_000)
             withContext(Dispatchers.IO){
                 repository.saveMovieList(remoteData)
                 movieList.postValue(remoteData)
             }
         }
-
-
 
     }
 

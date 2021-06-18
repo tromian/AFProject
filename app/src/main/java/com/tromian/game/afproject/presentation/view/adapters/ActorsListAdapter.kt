@@ -1,7 +1,6 @@
 package com.tromian.game.afproject.presentation.view.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.tromian.game.afproject.GlideApp
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.models.Actor
 
@@ -36,7 +35,7 @@ class ActorsListAdapter(private val context: Context) :
 
         fun bind(actor: Actor) {
 
-            Glide.with(itemView.context)
+            GlideApp.with(itemView.context)
                     .load(actor.imageUrl)
                     .error(R.drawable.person_placeholder)
                     .into(avatar)

@@ -27,7 +27,10 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        repository = (activity as MainActivity).repository
+        (activity as MainActivity).repository?.let {
+            repository = it
+        }
+
         movie = arguments?.getSerializable("movie") as Movie
         val movieId = movie.id
         val viewModel = MovieDetailsViewModel(movieId, repository)

@@ -23,10 +23,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MoviesDataRepository(context: Context) : MoviesRepository {
+class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     var genres: List<Genre>? = null
     val db = MoviesDB.getInstance(context)
+
 
     init {
         if (genres == null) {
@@ -38,54 +39,67 @@ class MoviesDataRepository(context: Context) : MoviesRepository {
 
     
     override suspend fun getCasts(movieId: Int): List<Actor> {
-        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
-        return when (result) {
-            is Resource.Success ->
-                if (result.data.actorList == null) {
-                    emptyList()
-                } else {
-                    result.data.actorList.toActor()
+        if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
+            return when (result) {
+                is Resource.Success ->
+                    if (result.data.actorList == null) {
+                        emptyList()
+                    } else {
+                        result.data.actorList.toActor()
 
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
+                    emptyList()
                 }
-            is Resource.Error -> {
-                Log.d("MyLog", result.message)
-                emptyList()
             }
-        }
+
+        }else return emptyList()
+
+
     }
 
     override suspend fun getGenres(): List<Genre> {
-        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
-        return when (result) {
-            is Resource.Success ->
-                if (result.data.genres == null) {
+        if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
+            return when (result) {
+                is Resource.Success ->
+                    if (result.data.genres == null) {
+                        emptyList()
+                    } else {
+                        result.data.genres.toGenre()
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
                     emptyList()
-                } else {
-                    result.data.genres.toGenre()
                 }
-            is Resource.Error -> {
-                Log.d("MyLog", result.message)
-                emptyList()
+
             }
 
-        }
+        }else return emptyList()
+
 
     }
 
     override suspend fun nowPlaying(): List<Movie> {
-        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
-        return when (result) {
-            is Resource.Success ->
-                if (result.data.movieList == null) {
+        if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
+            return when (result) {
+                is Resource.Success ->
+                    if (result.data.movieList == null) {
+                        emptyList()
+                    } else {
+                        result.data.movieList.toMovie()
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
                     emptyList()
-                } else {
-                    result.data.movieList.toMovie()
                 }
-            is Resource.Error -> {
-                Log.d("MyLog", result.message)
-                emptyList()
             }
-        }
+
+        }else return emptyList()
+
     }
 
     override suspend fun saveMovieList(movies: List<Movie>) {
