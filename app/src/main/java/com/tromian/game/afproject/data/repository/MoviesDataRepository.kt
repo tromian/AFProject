@@ -41,9 +41,9 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
     override suspend fun getCasts(movieId: Int): List<Actor> {
         if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
-            return when (result) {
+            when (result) {
                 is Resource.Success ->
-                    if (result.data.actorList == null) {
+                    return if (result.data.actorList == null) {
                         emptyList()
                     } else {
                         result.data.actorList.toActor()
@@ -51,7 +51,7 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
                     }
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
-                    emptyList()
+                    return emptyList()
                 }
             }
 
@@ -63,16 +63,16 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
     override suspend fun getGenres(): List<Genre> {
         if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
-            return when (result) {
+            when (result) {
                 is Resource.Success ->
-                    if (result.data.genres == null) {
+                    return if (result.data.genres == null) {
                         emptyList()
                     } else {
                         result.data.genres.toGenre()
                     }
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
-                    emptyList()
+                    return emptyList()
                 }
 
             }
@@ -85,16 +85,16 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
     override suspend fun nowPlaying(): List<Movie> {
         if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
-            return when (result) {
+            when (result) {
                 is Resource.Success ->
-                    if (result.data.movieList == null) {
+                    return if (result.data.movieList == null) {
                         emptyList()
                     } else {
                         result.data.movieList.toMovie()
                     }
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
-                    emptyList()
+                    return emptyList()
                 }
             }
 
