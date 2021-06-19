@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         repository = MoviesDataRepository(this)
+
     }
 
     override fun onBackButtonClicked() {

@@ -7,6 +7,7 @@ import android.util.Log
 import com.tromian.game.afproject.AppConstants
 import com.tromian.game.afproject.MoviesApp
 import com.tromian.game.afproject.data.db.MoviesDB
+import com.tromian.game.afproject.data.db.entityes.GenreEntity
 import com.tromian.game.afproject.data.db.entityes.MovieEntity
 import com.tromian.game.afproject.data.network.models.JsonActor
 import com.tromian.game.afproject.data.network.models.JsonGenre
@@ -21,14 +22,14 @@ import com.tromian.game.afproject.domain.repository.MoviesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     var genres: List<Genre>? = null
     val db = MoviesDB.getInstance(context)
-
-
+    
     init {
         if (genres == null) {
             GlobalScope.launch(Dispatchers.IO) {
@@ -37,7 +38,6 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
         }
     }
 
-    
     override suspend fun getCasts(movieId: Int): List<Actor> {
         if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
@@ -55,7 +55,6 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
             }
 
         }else return emptyList()
-
 
     }
 
@@ -164,6 +163,20 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
         }
         return newList
     }
+
+    private fun genreEntityToModel(entity: GenreEntity): Genre{
+        return Genre(
+            id = entity.id,
+            name = entity.name
+        )
+    }
+    private fun genreModelToEntity(model: Genre): GenreEntity{
+        return GenreEntity(
+            id = model.id,
+            name = model.name
+        )
+    }
+
     private fun List<JsonGenre>.toGenre(): List<Genre>{
         val newList = mutableListOf<Genre>()
         this.forEach {
