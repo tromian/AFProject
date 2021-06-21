@@ -29,7 +29,7 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     var genres: List<Genre>? = null
     val db = MoviesDB.getInstance(context)
-    
+
     init {
         if (genres == null) {
             GlobalScope.launch(Dispatchers.IO) {
