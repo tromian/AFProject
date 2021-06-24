@@ -15,14 +15,14 @@ object ResponseWrapper {
 
     fun <T> safeApiResponse(apiMethod: Response<T>): Resource<T> {
 
-        if (apiMethod.isSuccessful) {
+        return if (apiMethod.isSuccessful) {
             val newBody: T? = apiMethod.body()
             if (newBody != null){
-                return Resource.Success(newBody)
+                Resource.Success(newBody)
             }else {
-                return Resource.Error(apiMethod.message())
+                Resource.Error(apiMethod.message())
             }
-        } else return Resource.Error(apiMethod.message())
+        } else Resource.Error(apiMethod.message())
     }
 
     fun isNetworkConnected(context: Context) : Boolean{

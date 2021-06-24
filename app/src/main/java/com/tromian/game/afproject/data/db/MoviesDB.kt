@@ -11,7 +11,12 @@ import com.tromian.game.afproject.data.db.entityes.ActorEntity
 import com.tromian.game.afproject.data.db.entityes.GenreEntity
 import com.tromian.game.afproject.data.db.entityes.MovieEntity
 
-@Database(entities = [MovieEntity::class, ActorEntity::class, GenreEntity::class], version = 1)
+@Database(
+    entities = [MovieEntity::class,
+        ActorEntity::class,
+        GenreEntity::class],
+    version = 1
+)
 abstract class MoviesDB : RoomDatabase() {
 
     abstract fun movieDao(): MoviesDao
@@ -19,7 +24,6 @@ abstract class MoviesDB : RoomDatabase() {
     abstract fun genreDao(): GenresDao
 
     companion object {
-
         private const val DATABASE_NAME = "movies.db"
 
         private var INSTANCE: MoviesDB? = null
@@ -29,8 +33,10 @@ abstract class MoviesDB : RoomDatabase() {
         fun getInstance(appContext: Context): MoviesDB {
             synchronized(lock) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(appContext,
-                        MoviesDB::class.java, DATABASE_NAME)
+                    INSTANCE = Room.databaseBuilder(
+                        appContext,
+                        MoviesDB::class.java, DATABASE_NAME
+                    )
                         .allowMainThreadQueries()
                         .build()
                 }
@@ -39,5 +45,6 @@ abstract class MoviesDB : RoomDatabase() {
         }
 
     }
+
 
 }

@@ -1,16 +1,13 @@
 package com.tromian.game.afproject.presentation.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 class MoviesViewModel(
        val repository : MoviesRepository
@@ -22,7 +19,7 @@ class MoviesViewModel(
         loadNowPlaying()
     }
 
-    fun loadNowPlaying() = viewModelScope.launch(Dispatchers.IO){
+    fun loadNowPlaying() = viewModelScope.launch{
         val localData: List<Movie> = withContext(Dispatchers.IO){
             repository.getSavedMovieList()
         }
