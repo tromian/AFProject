@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.tromian.game.afproject.GlideApp
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.models.Movie
 
@@ -35,7 +35,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         runtime.text = "${movie.runningTime} MIN"
         movie.rating?.let { showRating(it) }
 
-        Glide.with(itemView.context)
+        GlideApp.with(itemView.context)
                 .load(movie.imageUrl)
                 .error(R.drawable.film_placeholder)
                 .into(bgPoster)

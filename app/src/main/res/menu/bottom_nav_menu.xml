@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/list_item"
+        android:title="@string/menu_main_list"
+        android:icon="@drawable/ic_main_list_menu"
+        />
+    <item
+        android:id="@+id/search_item"
+        android:title="@string/menu_search"
+        android:icon="@drawable/ic_search_menu"
+        />
+    <item
+        android:id="@+id/liked_item"
+        android:title="@string/menu_liked_movies"
+        android:icon="@drawable/ic_liked_menu"
+        />
+
+</menu>

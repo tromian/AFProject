@@ -10,4 +10,7 @@
     <string name="movie_cast_header">Cast</string>
     <string name="runtime">127 MIN</string>
     <string name="title_movies_list">Movies list</string>
+    <string name="menu_main_list">List Movies</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_liked_movies">Liked Movies</string>
 </resources>

@@ -8,4 +8,6 @@ interface MoviesRepository {
     suspend fun getCasts(movieId: Int): List<Actor>
     suspend fun getGenres(): List<Genre>
     suspend fun nowPlaying(): List<Movie>
+    suspend fun saveMovieList(movies: List<Movie>)
+    suspend fun getSavedMovieList() : List<Movie>
 }

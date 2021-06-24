@@ -8,6 +8,8 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -24,14 +26,21 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
     private lateinit var repository: MoviesDataRepository
     private lateinit var movie: Movie
+    private lateinit var viewModel : MovieDetailsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        repository = (activity as MainActivity).repository
+        (activity as MainActivity).repository?.let {
+            repository = it
+        }
+
         movie = arguments?.getSerializable("movie") as Movie
         val movieId = movie.id
-        val viewModel = MovieDetailsViewModel(movieId, repository)
-
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return MovieDetailsViewModel(movieId, repository) as T
+            }
+        }).get(MovieDetailsViewModel::class.java)
 
         bind(view)
 

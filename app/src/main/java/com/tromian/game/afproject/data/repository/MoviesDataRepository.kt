@@ -1,27 +1,26 @@
 package com.tromian.game.afproject.data.repository
 
 
+import android.content.Context
 import android.util.Log
-
-import com.tromian.game.afproject.AppConstants
-import com.tromian.game.afproject.data.network.models.JsonActor
-import com.tromian.game.afproject.data.network.models.JsonGenre
+import com.tromian.game.afproject.data.db.*
 import com.tromian.game.afproject.data.network.models.JsonMovie
+import com.tromian.game.afproject.data.network.tmdbapi.ApiFactory
+import com.tromian.game.afproject.data.network.tmdbapi.ResponseWrapper
 import com.tromian.game.afproject.domain.Resource
 import com.tromian.game.afproject.domain.models.Actor
 import com.tromian.game.afproject.domain.models.Genre
 import com.tromian.game.afproject.domain.models.Movie
-import com.tromian.game.afproject.data.network.tmdbapi.ApiFactory
-import com.tromian.game.afproject.data.network.tmdbapi.ResponseWrapper
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
-class MoviesDataRepository : MoviesRepository {
+class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     var genres: List<Genre>? = null
+    val db = MoviesDB.getInstance(context)
 
     init {
         if (genres == null) {
@@ -31,70 +30,79 @@ class MoviesDataRepository : MoviesRepository {
         }
     }
 
-    
     override suspend fun getCasts(movieId: Int): List<Actor> {
-        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
-        return when (result) {
-            is Resource.Success ->
-                if (result.data.actorList == null) {
+        return if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
+            when (result) {
+                is Resource.Success ->
+                    if (result.data.actorList == null) {
+                        emptyList()
+                    } else {
+                        result.data.actorList.toActor()
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
                     emptyList()
-                } else {
-                    result.data.actorList.toActor()
-
                 }
-            is Resource.Error -> {
-                Log.d("MyLog", result.message)
-                emptyList()
             }
-        }
+
+        }else emptyList()
+
     }
 
     override suspend fun getGenres(): List<Genre> {
-        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
-        return when (result) {
-            is Resource.Success ->
-                if (result.data.genres == null) {
-                    emptyList()
-                } else {
-                    result.data.genres.toGenre()
+        return if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
+            when (result) {
+                is Resource.Success ->
+                    if (result.data.genres == null) {
+                        emptyList()
+                    } else {
+                        result.data.genres.toGenre()
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
+                    return emptyList()
                 }
-            is Resource.Error -> {
-                Log.d("MyLog", result.message)
-                emptyList()
+
             }
 
-        }
+        }else emptyList()
 
     }
 
     override suspend fun nowPlaying(): List<Movie> {
-        val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
-        return when (result) {
-            is Resource.Success ->
-                if (result.data.movieList == null) {
+        return if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
+            when (result) {
+                is Resource.Success ->
+                    if (result.data.movieList == null) {
+                        emptyList()
+                    } else {
+                        result.data.movieList.toMovie()
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
                     emptyList()
-                } else {
-                    result.data.movieList.toMovie()
                 }
-            is Resource.Error -> {
-                Log.d("MyLog", result.message)
-                emptyList()
             }
+
+        }else emptyList()
+
+    }
+
+    override suspend fun saveMovieList(movies: List<Movie>) {
+        val entities = movies.map {
+            it.toMovieEntity()
         }
+        db.movieDao().insertMovies(entities)
     }
 
-
-    private fun getPosterUrl(): String {
-        return AppConstants.IMAGES_BASE_URL + AppConstants.POSTER_SIZE
-    }
-
-    private fun getProfilePictureUrl(): String {
-        return AppConstants.IMAGES_BASE_URL + AppConstants.PROFILE_SIZE
-    }
-
-    private fun checkAdultContent(adult: Boolean): Int {
-        return if (adult) AppConstants.ADULT_CONTENT_AGE
-        else AppConstants.NOT_ADULT_CONTENT_AGE
+    override suspend fun getSavedMovieList(): List<Movie> {
+        val movies = db.movieDao().getNowPlaying().map {
+            it.toMovie()
+        }
+        return movies
     }
 
     private fun loadGenres(genreIds: List<Int>): String {
@@ -108,44 +116,8 @@ class MoviesDataRepository : MoviesRepository {
                 }
             }
             result
-        } else return ""
+        } else ""
     }
-
-
-    private fun List<JsonActor>.toActor(): List<Actor> {
-        val newList = mutableListOf<Actor>()
-        this.forEach {
-            val newId: Int? = it.id
-            val newName: String? = it.name
-            if (newId != null && newName != null) {
-                newList.add(
-                    Actor(
-                        id = newId,
-                        name = newName,
-                        imageUrl = getProfilePictureUrl() + it.profilePath
-                    )
-                )
-            }
-        }
-        return newList
-    }
-    private fun List<JsonGenre>.toGenre(): List<Genre>{
-        val newList = mutableListOf<Genre>()
-        this.forEach {
-            val newId: Int? = it.id
-            val newName: String? = it.name
-            if (newId != null && newName != null) {
-                newList.add(
-                    Genre(
-                        id = it.id,
-                        name = it.name
-                    )
-                )
-            }
-        }
-        return newList
-    }
-
     private fun List<JsonMovie>.toMovie(): List<Movie> {
         val movies = mutableListOf<Movie>()
         this.forEach {
@@ -169,7 +141,5 @@ class MoviesDataRepository : MoviesRepository {
         }
         return movies
     }
-
     private fun ratingDoubleToInt(tmdbRating: Double?) = tmdbRating?.div(2)?.toInt()
-
 }
