@@ -13,9 +13,3 @@ data class GenreEntity(
     @ColumnInfo(name = "name")
     val name: String
 )
-fun GenreEntity.toGenre(): Genre {
-    return Genre(
-        id = this.id,
-        name = this.name
-    )
-}

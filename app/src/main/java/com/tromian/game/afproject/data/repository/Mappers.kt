@@ -66,13 +66,6 @@ fun List<JsonActor>.toActor(): List<Actor> {
     return newList
 }
 
-fun genreModelToEntity(model: Genre): GenreEntity {
-    return GenreEntity(
-        id = model.id,
-        name = model.name
-    )
-}
-
 fun List<JsonGenre>.toGenre(): List<Genre>{
     val newList = mutableListOf<Genre>()
     this.forEach {
@@ -90,3 +83,16 @@ fun List<JsonGenre>.toGenre(): List<Genre>{
     return newList
 }
 
+fun GenreEntity.toGenre(): Genre {
+    return Genre(
+        id = this.id,
+        name = this.name
+    )
+}
+
+fun Genre.toGenreEntity(): GenreEntity {
+    return GenreEntity(
+        id = this.id,
+        name = this.name
+    )
+}

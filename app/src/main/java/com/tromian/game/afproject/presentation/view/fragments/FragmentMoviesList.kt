@@ -35,11 +35,9 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         val adapter = MovieListAdapter() { itemId ->
             openFragment(itemId)
         }
-        viewModel.let {
-            it.movieList.observe(requireActivity(), Observer {
+        viewModel.movieList.observe(requireActivity(), Observer {
                 adapter.submitList(it)
-            })
-        }
+        })
 
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
 

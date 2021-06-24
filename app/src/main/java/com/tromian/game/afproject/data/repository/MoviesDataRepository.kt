@@ -12,10 +12,9 @@ import com.tromian.game.afproject.domain.models.Actor
 import com.tromian.game.afproject.domain.models.Genre
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-
 
 class MoviesDataRepository(val context: Context) : MoviesRepository {
 
@@ -24,9 +23,24 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     init {
         if (genres == null) {
-            GlobalScope.launch(Dispatchers.IO) {
-                genres = getGenres()
+            CoroutineScope(Dispatchers.IO).launch{
+                getGenreList()
             }
+        }
+    }
+
+    suspend fun getGenreList(){
+        val localGenres = db.genreDao().getGenreList()
+        if (localGenres.isNotEmpty()){
+            genres = localGenres.map {
+                it.toGenre()
+            }
+        }else{
+            val remoteGenres = getGenres()
+            genres = remoteGenres
+            db.genreDao().insertListGenre(remoteGenres.map {
+                it.toGenreEntity()
+            })
         }
     }
 
@@ -118,6 +132,7 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
             result
         } else ""
     }
+
     private fun List<JsonMovie>.toMovie(): List<Movie> {
         val movies = mutableListOf<Movie>()
         this.forEach {
