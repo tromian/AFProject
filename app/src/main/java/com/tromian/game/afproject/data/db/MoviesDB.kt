@@ -37,6 +37,7 @@ abstract class MoviesDB : RoomDatabase() {
                         appContext,
                         MoviesDB::class.java, DATABASE_NAME
                     )
+                        .fallbackToDestructiveMigration()
                         .allowMainThreadQueries()
                         .build()
                 }
