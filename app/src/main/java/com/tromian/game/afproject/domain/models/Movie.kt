@@ -10,7 +10,7 @@ data class Movie(
         val genres: String?= null,
         val runningTime: Int?= null,
         val reviewCount: Int?= null,
-        val isLiked: Boolean?= null,
+        var isLiked: Boolean = false,
         val rating: Int?= null,
         val imageUrl: String?= null,
         val detailImageUrl: String?= null,

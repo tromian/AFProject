@@ -14,10 +14,12 @@ class MoviesViewModel(
 ) : ViewModel() {
 
     var movieList = MutableLiveData<List<Movie>>()
+    var page: Int = 1
 
     init {
         loadNowPlaying()
     }
+
 
     fun loadNowPlaying() = viewModelScope.launch{
         val localData: List<Movie> = withContext(Dispatchers.IO){
@@ -28,13 +30,14 @@ class MoviesViewModel(
             movieList.postValue(localData)
         }
         val remoteData: List<Movie> = withContext(Dispatchers.IO){
-                repository.nowPlaying()
+                repository.nowPlaying(page)
         }
 
         if (remoteData.isNotEmpty()){
             withContext(Dispatchers.IO){
                 repository.saveMovieList(remoteData)
-                movieList.postValue(remoteData)
+                val updatedLocalData = repository.getSavedMovieList()
+                movieList.postValue(updatedLocalData)
             }
         }
 

@@ -85,9 +85,11 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     }
 
-    override suspend fun nowPlaying(): List<Movie> {
+    override suspend fun nowPlaying(
+        page: Int
+    ): List<Movie> {
         return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying(page))
             when (result) {
                 is Resource.Success ->
                     if (result.data.movieList == null) {

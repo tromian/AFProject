@@ -13,9 +13,8 @@ interface MoviesDao {
     @Query("SELECT * FROM now_playing")
     suspend fun getNowPlaying() : List<MovieEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMovies(movies: List<MovieEntity>)
-
 
 
 }

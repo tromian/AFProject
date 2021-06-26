@@ -26,5 +26,7 @@ data class MovieEntity(
     @ColumnInfo(name = "image_url_detail")
     val detailImageUrl: String? = null,
     @ColumnInfo(name = "story")
-    val storyLine: String
+    val storyLine: String,
+    @ColumnInfo(name = "liked")
+    val isLiked: Boolean,
 )

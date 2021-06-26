@@ -7,11 +7,14 @@ import com.tromian.game.afproject.data.network.responses.GenresResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TmdbAPI {
 
     @GET("movie/now_playing")
-    suspend fun getNowPlaying(): Response<NowPlaying>
+    suspend fun getNowPlaying(
+        @Query(value = "page") page: Int = 1
+    ): Response<NowPlaying>
 
     @GET("configuration")
     suspend fun getConfiguration(): Response<ConfigurationResponse>

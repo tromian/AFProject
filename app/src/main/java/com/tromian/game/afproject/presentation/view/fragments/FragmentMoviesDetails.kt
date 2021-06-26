@@ -65,7 +65,6 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         if (context is SomeItemClickListener) {
             someFragmentClickListener = context
         }
