@@ -121,6 +121,24 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
         return movies
     }
 
+    override suspend fun searchMovie(title: String): List<Movie> {
+        return if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.search(title))
+            when(result){
+                is Resource.Success ->
+                    if (result.data.results == null) {
+                        emptyList()
+                    } else {
+                        result.data.results.toMovie()
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
+                    emptyList()
+                }
+            }
+        } else emptyList()
+    }
+
     private fun loadGenres(genreIds: List<Int>): String {
         return if (genres != null) {
             var result = ""

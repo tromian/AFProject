@@ -76,6 +76,11 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         someFragmentClickListener = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
     fun bind(view: View) {
 
         val poster: ImageView = view.findViewById(R.id.ivBackgroundPoster)
