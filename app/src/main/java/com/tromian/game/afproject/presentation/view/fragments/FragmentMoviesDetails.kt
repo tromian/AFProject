@@ -3,7 +3,6 @@ package com.tromian.game.afproject.presentation.view.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,17 +15,16 @@ import com.bumptech.glide.Glide
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.SomeItemClickListener
 import com.tromian.game.afproject.data.repository.MoviesDataRepository
-import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.presentation.view.MainActivity
+import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsViewModel
-import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     private var someFragmentClickListener: SomeItemClickListener? = null
     private lateinit var repository: MoviesDataRepository
     private lateinit var movie: Movie
-    private lateinit var viewModel : MovieDetailsViewModel
+    private lateinit var viewModel: MovieDetailsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -36,7 +34,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
 
         movie = arguments?.getSerializable("movie") as Movie
         val movieId = movie.id
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return MovieDetailsViewModel(movieId, repository) as T
             }
@@ -78,7 +76,6 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
 
     fun bind(view: View) {
@@ -103,11 +100,29 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         tags.text = movie.genres
         reviews.text = "${movie.reviewCount} Reviews"
         movie.rating
-        setStars(movie.rating,view)
+        setStars(movie.rating, view)
+        setLikeItem(view)
 
     }
 
-    private fun setStars(rating: Int?, view: View){
+    private fun setLikeItem(view: View) {
+        val liked: ImageView = view.findViewById(R.id.iv_like)
+        if (movie.isLiked) {
+            liked.setImageResource(R.drawable.ic_heart_liked)
+        }
+        liked.setOnClickListener {
+            movie.isLiked = !movie.isLiked
+            if (movie.isLiked) {
+                viewModel.saveMovie(movie)
+                liked.setImageResource(R.drawable.ic_heart_liked)
+            } else {
+                viewModel.deleteMovie(movie)
+                liked.setImageResource(R.drawable.ic_heart)
+            }
+        }
+    }
+
+    private fun setStars(rating: Int?, view: View) {
 
         val star1: ImageView = view.findViewById(R.id.ivStar1)
         val star2: ImageView = view.findViewById(R.id.ivStar2)

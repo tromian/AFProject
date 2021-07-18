@@ -28,5 +28,5 @@ data class MovieEntity(
     @ColumnInfo(name = "story")
     val storyLine: String,
     @ColumnInfo(name = "liked")
-    val isLiked: Boolean,
+    val isLiked: Boolean = false,
 )

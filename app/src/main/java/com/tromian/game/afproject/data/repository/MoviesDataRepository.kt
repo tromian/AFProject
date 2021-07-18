@@ -121,6 +121,18 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
         return movies
     }
 
+    override suspend fun saveMovie(movie: Movie) {
+        movie.toMovieEntity().also {
+            db.movieDao().insertMovie(it)
+        }
+    }
+
+    override suspend fun deleteMovie(movie: Movie) {
+        movie.toMovieEntity().also {
+            db.movieDao().deleteMovie(it)
+        }
+    }
+
     override suspend fun searchMovie(title: String): List<Movie> {
         return if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.search(title))

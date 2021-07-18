@@ -36,14 +36,8 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         movie.rating?.let { showRating(it) }
         if (movie.isLiked){
             liked.setImageResource(R.drawable.ic_heart_liked)
-        }
-        liked.setOnClickListener {
-            movie.isLiked = !movie.isLiked
-            if (movie.isLiked){
-                liked.setImageResource(R.drawable.ic_heart_liked)
-            }else{
-                liked.setImageResource(R.drawable.ic_heart)
-            }
+        }else{
+            liked.setImageResource(R.drawable.ic_heart)
         }
 
         GlideApp.with(itemView.context)

@@ -10,5 +10,7 @@ interface MoviesRepository {
     suspend fun nowPlaying(page : Int): List<Movie>
     suspend fun saveMovieList(movies: List<Movie>)
     suspend fun getSavedMovieList() : List<Movie>
+    suspend fun saveMovie(movie: Movie)
+    suspend fun deleteMovie(movie: Movie)
     suspend fun searchMovie(title : String) : List<Movie>
 }

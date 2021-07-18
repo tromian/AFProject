@@ -8,17 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
-import com.tromian.game.afproject.data.repository.MoviesDataRepository
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import com.tromian.game.afproject.presentation.view.MainActivity
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
-import com.tromian.game.afproject.presentation.view.adapters.SearchListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieSearchVM
-import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 
 class FragmentSearch : Fragment(R.layout.fragment_search) {
 
@@ -42,7 +38,9 @@ class FragmentSearch : Fragment(R.layout.fragment_search) {
             viewModel.searchMovie(it.toString())
         }
 
-        val adapter = SearchListAdapter()
+        val adapter = MovieListAdapter(){ itemId ->
+            openFragment(itemId)
+        }
 
         viewModel.movieList.observe(requireActivity(), Observer {
             adapter.submitList(it)
@@ -51,6 +49,14 @@ class FragmentSearch : Fragment(R.layout.fragment_search) {
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
 
         rvMovieList.adapter = adapter
+
+    }
+
+    private fun openFragment(itemId: Int) {
+        val bundle = Bundle()
+        val movie = viewModel.movieList.value?.get(itemId)
+        bundle.putSerializable("movie",movie)
+        findNavController().navigate(R.id.fragment_details,bundle)
 
     }
 }
