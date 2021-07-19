@@ -12,7 +12,7 @@
         android:icon="@drawable/ic_search_menu"
         />
     <item
-        android:id="@+id/liked_item"
+        android:id="@+id/fragment_favourite"
         android:title="@string/menu_liked_movies"
         android:icon="@drawable/ic_liked_menu"
         />

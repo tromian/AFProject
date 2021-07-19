@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MoviesViewModel(
-       val repository : MoviesRepository
+       private val repository : MoviesRepository
 ) : ViewModel() {
 
     var movieList = MutableLiveData<List<Movie>>()
