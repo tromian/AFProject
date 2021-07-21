@@ -29,6 +29,12 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
         }
     }
 
+    override suspend fun getFavourite() : List<Movie>{
+        return db.movieDao().getFavourite().map {
+            it.toMovie()
+        }
+    }
+
     suspend fun getGenreList(){
         val localGenres = db.genreDao().getGenreList()
         if (localGenres.isNotEmpty()){

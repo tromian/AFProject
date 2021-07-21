@@ -13,4 +13,5 @@ interface MoviesRepository {
     suspend fun saveMovie(movie: Movie)
     suspend fun deleteMovie(movie: Movie)
     suspend fun searchMovie(title : String) : List<Movie>
+    suspend fun getFavourite() : List<Movie>
 }

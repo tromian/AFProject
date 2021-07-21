@@ -6,8 +6,11 @@ import com.tromian.game.afproject.data.db.entityes.MovieEntity
 @Dao
 interface MoviesDao {
 
-    @Query("SELECT * FROM now_playing")
+    @Query("SELECT * FROM movies ")
     suspend fun getNowPlaying() : List<MovieEntity>
+
+    @Query("SELECT * FROM movies WHERE liked = 1 ")
+    suspend fun getFavourite() : List<MovieEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMovies(movies: List<MovieEntity>)
