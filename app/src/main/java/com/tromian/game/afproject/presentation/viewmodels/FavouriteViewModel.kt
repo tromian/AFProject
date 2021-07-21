@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +11,8 @@ import kotlinx.coroutines.launch
 class FavouriteViewModel(
     private val repository: MoviesRepository
 ) : ViewModel() {
-    val movieList = MutableLiveData<List<Movie>>()
+    private val _movieList = MutableLiveData<List<Movie>>()
+    val movieList : LiveData<List<Movie>> = _movieList
 
     init {
         loadFavourites()
@@ -18,7 +20,7 @@ class FavouriteViewModel(
 
     private fun loadFavourites() = viewModelScope.launch {
         val localFavouriteList = repository.getFavourite()
-        movieList.postValue(localFavouriteList)
+        _movieList.postValue(localFavouriteList)
     }
 
 }

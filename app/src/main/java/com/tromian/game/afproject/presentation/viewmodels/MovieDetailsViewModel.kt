@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,14 +15,15 @@ class MovieDetailsViewModel(
         private val repository : MoviesRepository
 ) : ViewModel() {
 
-    var actorList = MutableLiveData<List<Actor>>()
+    private val _actorList = MutableLiveData<List<Actor>>()
+    val actorList : LiveData<List<Actor>> = _actorList
 
     init {
         getActors(movieId)
     }
 
     fun getActors(movieId : Int) = viewModelScope.launch(Dispatchers.IO) {
-        actorList.postValue(repository.getCasts(movieId))
+        _actorList.postValue(repository.getCasts(movieId))
     }
 
     fun saveMovie(movie: Movie) = viewModelScope.launch {

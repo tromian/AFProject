@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,13 +14,14 @@ class MovieSearchVM(
     val repository: MoviesRepository
 ) : ViewModel() {
 
-    var movieList = MutableLiveData<List<Movie>>()
+    private val _movieList = MutableLiveData<List<Movie>>()
+    val movieList : LiveData<List<Movie>> = _movieList
 
     fun searchMovie(title: String) = viewModelScope.launch(Dispatchers.IO) {
         delay(2_000)
         val searchResult = repository.searchMovie(title)
         if (searchResult.isNotEmpty()){
-            movieList.postValue(searchResult)
+            _movieList.postValue(searchResult)
         }
     }
 
