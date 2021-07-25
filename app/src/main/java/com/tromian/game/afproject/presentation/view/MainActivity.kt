@@ -6,16 +6,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tromian.game.afproject.R
-import com.tromian.game.afproject.data.repository.MoviesDataRepository
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
-    var repository: MoviesDataRepository? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repository = MoviesDataRepository(this)
 
         val navView : BottomNavigationView = findViewById(R.id.bottomNavigationView)
 

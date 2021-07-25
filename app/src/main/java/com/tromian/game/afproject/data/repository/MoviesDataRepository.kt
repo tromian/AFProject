@@ -16,7 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MoviesDataRepository(val context: Context) : MoviesRepository {
+open class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     private var genres: List<Genre>? = null
     private val db = MoviesDB.getInstance(context)

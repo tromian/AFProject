@@ -10,26 +10,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
-import com.tromian.game.afproject.domain.repository.MoviesRepository
-import com.tromian.game.afproject.presentation.view.MainActivity
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieSearchVM
 
 class FragmentSearch : Fragment(R.layout.fragment_search) {
 
     lateinit var viewModel : MovieSearchVM
-    lateinit var repository: MoviesRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (activity as MainActivity).repository?.let {
-            repository = it
-        }
+        
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MovieSearchVM(repository) as T
+                return MovieSearchVM(Di.moviesRepo) as T
             }
         }).get(MovieSearchVM::class.java)
 
