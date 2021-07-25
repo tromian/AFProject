@@ -18,7 +18,8 @@ fun MovieEntity.toMovie(): Movie {
         reviewCount = this.reviewCount,
         pgAge = this.pgAge,
         rating = this.rating,
-        storyLine = this.storyLine
+        storyLine = this.storyLine,
+        isLiked = this.isLiked
     )
 }
 
@@ -31,7 +32,9 @@ fun Movie.toMovieEntity(): MovieEntity {
         reviewCount = this.reviewCount,
         pgAge = this.pgAge,
         rating = this.rating,
-        storyLine = this.storyLine
+        storyLine = this.storyLine,
+        isLiked = this.isLiked
+
     )
 }
 

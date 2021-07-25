@@ -1,16 +1,15 @@
 package com.tromian.game.afproject.data.network.responses
 
 import com.google.gson.annotations.SerializedName
-import kotlinx.serialization.Serializable
 
-@Serializable
+
 data class ConfigurationResponse(
         @SerializedName("change_keys")
     val changeKeys: List<String>? = null,
         @SerializedName("images")
     val images: Images? = null
 )
-@Serializable
+
 data class Images(
         @SerializedName("backdrop_sizes")
     val backdropSizes: List<String>? = null,

@@ -16,27 +16,33 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MoviesDataRepository(val context: Context) : MoviesRepository {
+open class MoviesDataRepository(val context: Context) : MoviesRepository {
 
-    var genres: List<Genre>? = null
-    val db = MoviesDB.getInstance(context)
+    private var genres: List<Genre>? = null
+    private val db = MoviesDB.getInstance(context)
 
     init {
         if (genres == null) {
             CoroutineScope(Dispatchers.IO).launch{
-                getGenreList()
+                getMovieGenreList()
             }
         }
     }
 
-    suspend fun getGenreList(){
+    override suspend fun getFavouriteMovieListFromDB() : List<Movie>{
+        return db.movieDao().getFavourite().map {
+            it.toMovie()
+        }
+    }
+
+    suspend fun getMovieGenreList(){
         val localGenres = db.genreDao().getGenreList()
         if (localGenres.isNotEmpty()){
             genres = localGenres.map {
                 it.toGenre()
             }
         }else{
-            val remoteGenres = getGenres()
+            val remoteGenres = getAllGenreListFromApi()
             genres = remoteGenres
             db.genreDao().insertListGenre(remoteGenres.map {
                 it.toGenreEntity()
@@ -44,7 +50,7 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
         }
     }
 
-    override suspend fun getCasts(movieId: Int): List<Actor> {
+    override suspend fun getMovieCastsByIdInApi(movieId: Int): List<Actor> {
         return if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
             when (result) {
@@ -64,7 +70,7 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     }
 
-    override suspend fun getGenres(): List<Genre> {
+    override suspend fun getAllGenreListFromApi(): List<Genre> {
         return if (ResponseWrapper.isNetworkConnected(context)){
             val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
             when (result) {
@@ -85,9 +91,11 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     }
 
-    override suspend fun nowPlaying(): List<Movie> {
+    override suspend fun nowPlayingMoviesFromApiWithPage(
+        page: Int
+    ): List<Movie> {
         return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying())
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying(page))
             when (result) {
                 is Resource.Success ->
                     if (result.data.movieList == null) {
@@ -105,18 +113,48 @@ class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     }
 
-    override suspend fun saveMovieList(movies: List<Movie>) {
+    override suspend fun saveMovieListToDB(movies: List<Movie>) {
         val entities = movies.map {
             it.toMovieEntity()
         }
         db.movieDao().insertMovies(entities)
     }
 
-    override suspend fun getSavedMovieList(): List<Movie> {
+    override suspend fun getSavedMovieListFromDB(): List<Movie> {
         val movies = db.movieDao().getNowPlaying().map {
             it.toMovie()
         }
         return movies
+    }
+
+    override suspend fun saveMovieToDB(movie: Movie) {
+        movie.toMovieEntity().also {
+            db.movieDao().insertMovie(it)
+        }
+    }
+
+    override suspend fun deleteMovieFromDB(movie: Movie) {
+        movie.toMovieEntity().also {
+            db.movieDao().deleteMovie(it)
+        }
+    }
+
+    override suspend fun searchMoviesByTitleInApi(title: String): List<Movie> {
+        return if (ResponseWrapper.isNetworkConnected(context)){
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.search(title))
+            when(result){
+                is Resource.Success ->
+                    if (result.data.results == null) {
+                        emptyList()
+                    } else {
+                        result.data.results.toMovie()
+                    }
+                is Resource.Error -> {
+                    Log.d("MyLog", result.message)
+                    emptyList()
+                }
+            }
+        } else emptyList()
     }
 
     private fun loadGenres(genreIds: List<Int>): String {

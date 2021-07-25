@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "now_playing")
+@Entity(tableName = "movies")
 data class MovieEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
@@ -26,5 +26,7 @@ data class MovieEntity(
     @ColumnInfo(name = "image_url_detail")
     val detailImageUrl: String? = null,
     @ColumnInfo(name = "story")
-    val storyLine: String
+    val storyLine: String,
+    @ColumnInfo(name = "liked")
+    val isLiked: Boolean = false,
 )

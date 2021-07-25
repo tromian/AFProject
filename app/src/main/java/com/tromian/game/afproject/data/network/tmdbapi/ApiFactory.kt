@@ -11,15 +11,15 @@ object ApiFactory {
 
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url
-                .newBuilder()
-                .addQueryParameter("api_key", AppConstants.TMDB_API_KEY)
-                .addQueryParameter("language",AppConstants.LANGUAGE)
-                .build()
+            .newBuilder()
+            .addQueryParameter("api_key", AppConstants.TMDB_API_KEY)
+            .addQueryParameter("language", AppConstants.LANGUAGE)
+            .build()
 
         val newRequest = chain.request()
-                .newBuilder()
-                .url(newUrl)
-                .build()
+            .newBuilder()
+            .url(newUrl)
+            .build()
 
         chain.proceed(newRequest)
 
@@ -29,7 +29,7 @@ object ApiFactory {
         .addInterceptor(authInterceptor)
         .build()
 
-    private val retrofit : Retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit = Retrofit.Builder()
         .client(tmdbClient)
         .baseUrl(AppConstants.BASE_URL_TMDB)
         .addConverterFactory(GsonConverterFactory.create())
@@ -37,5 +37,5 @@ object ApiFactory {
         .build()
 
     val tmdbApi = retrofit.create(TmdbAPI::class.java)
-    
+
 }

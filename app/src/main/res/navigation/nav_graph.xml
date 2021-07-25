@@ -1,21 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentMoviesList">
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragment_list">
 
     <fragment
-        android:id="@+id/fragmentMoviesList"
+        android:id="@+id/fragment_list"
         android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesList"
-        android:label="FragmentMoviesList" >
+        android:label="FragmentMoviesList"
+        tools:layout="@layout/fragment_movies_list">
         <action
             android:id="@+id/action_fragmentMoviesList_to_fragmentMoviesDetails"
-            app:destination="@id/fragmentMoviesDetails" />
+            app:destination="@id/fragment_details" />
         <argument
-            android:name="ItemId"
-            app:argType="integer" />
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentMoviesDetails"
+        android:id="@+id/fragment_details"
         android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesDetails"
-        android:label="FragmentMoviesDetails" />
+        android:label="FragmentMoviesDetails"
+        tools:layout="@layout/fragment_movie_details">
+        <argument
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
+    </fragment>
+    <argument
+        android:name="movie"
+        app:argType="com.tromian.game.afproject.domain.models.Movie" />
+
+    <fragment
+        android:id="@+id/fragment_search"
+        android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentSearch"
+        android:label="FragmentSearch"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_fragmentSearch_to_fragmentMoviesDetails"
+            app:destination="@id/fragment_details" />
+        <argument
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_favourite"
+        android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentFavourite"
+        android:label="FragmentFavourite"
+        tools:layout="@layout/fragment_favourite_movies">
+        <action
+            android:id="@+id/action_fragmentFavourite_to_fragment_details"
+            app:destination="@id/fragment_details" />
+        <argument
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
+    </fragment>
 </navigation>

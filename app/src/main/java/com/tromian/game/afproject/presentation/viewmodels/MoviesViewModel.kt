@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,38 +11,38 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MoviesViewModel(
-       val repository : MoviesRepository
+    private val repository: MoviesRepository
 ) : ViewModel() {
 
-    var movieList = MutableLiveData<List<Movie>>()
+    private val _movieList = MutableLiveData<List<Movie>>()
+    val movieList: LiveData<List<Movie>> = _movieList
+
+    var page: Int = 1
 
     init {
         loadNowPlaying()
     }
 
-    fun loadNowPlaying() = viewModelScope.launch{
-        val localData: List<Movie> = withContext(Dispatchers.IO){
-            repository.getSavedMovieList()
+
+    fun loadNowPlaying() = viewModelScope.launch {
+        val localData: List<Movie> = withContext(Dispatchers.IO) {
+            repository.getSavedMovieListFromDB()
         }
 
-        if (localData.isNotEmpty()){
-            movieList.postValue(localData)
+        if (localData.isNotEmpty()) {
+            _movieList.postValue(localData)
         }
-        val remoteData: List<Movie> = withContext(Dispatchers.IO){
-                repository.nowPlaying()
+        val remoteData: List<Movie> = withContext(Dispatchers.IO) {
+            repository.nowPlayingMoviesFromApiWithPage(page)
         }
 
-        if (remoteData.isNotEmpty()){
-            withContext(Dispatchers.IO){
-                repository.saveMovieList(remoteData)
-                movieList.postValue(remoteData)
+        if (remoteData.isNotEmpty()) {
+            withContext(Dispatchers.IO) {
+                repository.saveMovieListToDB(remoteData)
+                val updatedLocalData = repository.getSavedMovieListFromDB()
+                _movieList.postValue(updatedLocalData)
             }
         }
 
     }
-
-//    fun getMovies() = viewModelScope.launch(Dispatchers.IO) {
-//        movieList.postValue(repository.nowPlaying())
-//    }
-
 }

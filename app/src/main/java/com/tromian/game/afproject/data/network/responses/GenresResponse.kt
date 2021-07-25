@@ -1,11 +1,9 @@
 package com.tromian.game.afproject.data.network.responses
 
+import com.google.gson.annotations.SerializedName
 import com.tromian.game.afproject.data.network.models.JsonGenre
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class GenresResponse(
-        @SerialName("genres")
+    @SerializedName("genres")
     val genres: List<JsonGenre>? = null
 )

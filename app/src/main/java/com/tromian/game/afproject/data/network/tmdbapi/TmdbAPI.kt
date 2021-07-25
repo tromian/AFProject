@@ -1,17 +1,17 @@
 package com.tromian.game.afproject.data.network.tmdbapi
 
-import com.tromian.game.afproject.data.network.responses.NowPlaying
-import com.tromian.game.afproject.data.network.responses.ConfigurationResponse
-import com.tromian.game.afproject.data.network.responses.CreditsResponse
-import com.tromian.game.afproject.data.network.responses.GenresResponse
+import com.tromian.game.afproject.data.network.responses.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TmdbAPI {
 
     @GET("movie/now_playing")
-    suspend fun getNowPlaying(): Response<NowPlaying>
+    suspend fun getNowPlaying(
+        @Query(value = "page") page: Int = 1
+    ): Response<NowPlaying>
 
     @GET("configuration")
     suspend fun getConfiguration(): Response<ConfigurationResponse>
@@ -21,5 +21,9 @@ interface TmdbAPI {
 
     @GET("genre/movie/list")
     suspend fun getGenres(): Response<GenresResponse>
+    @GET("search/movie")
+    suspend fun search(
+        @Query(value = "query") query: String
+    ) : Response<SearchResponse>
 
 }

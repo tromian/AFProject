@@ -11,38 +11,38 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
-import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
+import com.tromian.game.afproject.presentation.viewmodels.FavouriteViewModel
 
-class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
+class FragmentFavourite : Fragment(R.layout.fragment_favourite_movies) {
 
-    private lateinit var viewModel : MoviesViewModel
+    lateinit var viewModel : FavouriteViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MoviesViewModel(Di.moviesRepo) as T
+                return FavouriteViewModel(Di.moviesRepo) as T
             }
-        }).get(MoviesViewModel::class.java)
+        }).get(FavouriteViewModel::class.java)
 
         val adapter = MovieListAdapter() { itemId ->
             openFragment(itemId)
         }
+
         viewModel.movieList.observe(requireActivity(), Observer {
-                adapter.submitList(it)
+            adapter.submitList(it)
         })
 
-        val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
+        val rvMovieList = view.findViewById<RecyclerView>(R.id.rvFavouriteMovieList)
 
         rvMovieList.adapter = adapter
 
     }
-
     private fun openFragment(itemId: Int) {
         val movie = viewModel.movieList.value?.get(itemId)
         if (movie!=null){
-            val action = FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movie)
+            val action = FragmentFavouriteDirections.actionFragmentFavouriteToFragmentDetails(movie)
             findNavController().navigate(action)
         }
     }

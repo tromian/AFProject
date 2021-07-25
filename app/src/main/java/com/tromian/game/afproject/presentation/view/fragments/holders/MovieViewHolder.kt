@@ -12,19 +12,19 @@ import com.tromian.game.afproject.domain.models.Movie
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    val bgPoster: ImageView = itemView.findViewById(R.id.ivBackgroundPoster)
+    private val bgPoster: ImageView = itemView.findViewById(R.id.ivBackgroundPoster)
     private val title: TextView = itemView.findViewById(R.id.tvTitle)
     private val legalAge: TextView = itemView.findViewById(R.id.tvAge)
     private val category: TextView = itemView.findViewById(R.id.tvTag)
     private val reviews: TextView = itemView.findViewById(R.id.tvReviews)
     private val runtime: TextView = itemView.findViewById(R.id.tvRuntime)
+    private val liked: ImageView = itemView.findViewById(R.id.liked_item)
 
     private val star1: ImageView = itemView.findViewById(R.id.star1)
     private val star2: ImageView = itemView.findViewById(R.id.star2)
     private val star3: ImageView = itemView.findViewById(R.id.star3)
     private val star4: ImageView = itemView.findViewById(R.id.star4)
     private val star5: ImageView = itemView.findViewById(R.id.star5)
-
 
     @SuppressLint("SetTextI18n")
     fun bind(movie: Movie) {
@@ -34,6 +34,10 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         reviews.text = "${movie.reviewCount} Reviews"
         runtime.text = "${movie.runningTime} MIN"
         movie.rating?.let { showRating(it) }
+        liked.setImageResource(
+            if (movie.isLiked) R.drawable.ic_heart_liked
+        else R.drawable.ic_heart)
+
 
         GlideApp.with(itemView.context)
                 .load(movie.imageUrl)

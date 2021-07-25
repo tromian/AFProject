@@ -1,48 +1,40 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
-import com.tromian.game.afproject.SomeItemClickListener
-import com.tromian.game.afproject.data.repository.MoviesDataRepository
-import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.domain.models.Movie
-import com.tromian.game.afproject.presentation.view.MainActivity
+import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsViewModel
-import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
-    private var someFragmentClickListener: SomeItemClickListener? = null
-    private lateinit var repository: MoviesDataRepository
-    private lateinit var movie: Movie
-    private lateinit var viewModel : MovieDetailsViewModel
+    private var movie: Movie? = null
+    private lateinit var viewModel: MovieDetailsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        (activity as MainActivity).repository?.let {
-            repository = it
-        }
-
-        movie = arguments?.getSerializable("movie") as Movie
-        val movieId = movie.id
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
+        val safeArgs: FragmentFavouriteArgs by navArgs()
+        movie = safeArgs.movie
+        val movieId = movie?.id
+        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MovieDetailsViewModel(movieId, repository) as T
+                return movieId?.let { MovieDetailsViewModel(it, Di.moviesRepo) } as T
             }
         }).get(MovieDetailsViewModel::class.java)
+        movie?.let { bind(view, it) }
 
-        bind(view)
 
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rvActorsList)
         val adapter = ActorsListAdapter(requireContext())
@@ -57,27 +49,20 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
 
         view.findViewById<TextView>(R.id.tvBack).apply {
             setOnClickListener {
-                someFragmentClickListener?.onBackButtonClicked()
+                findNavController().popBackStack()
             }
         }
 
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        if (context is SomeItemClickListener) {
-            someFragmentClickListener = context
-        }
-
-    }
 
     override fun onDetach() {
         super.onDetach()
-        someFragmentClickListener = null
+        movie = null
     }
 
-    fun bind(view: View) {
+
+    fun bind(view: View, movie: Movie) {
 
         val poster: ImageView = view.findViewById(R.id.ivBackgroundPoster)
         val age: TextView = view.findViewById(R.id.tvAge)
@@ -99,11 +84,29 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         tags.text = movie.genres
         reviews.text = "${movie.reviewCount} Reviews"
         movie.rating
-        setStars(movie.rating,view)
+        setStars(movie.rating, view)
+        setLikeItem(view, movie)
 
     }
 
-    private fun setStars(rating: Int?, view: View){
+    private fun setLikeItem(view: View, movie: Movie) {
+        val liked: ImageView = view.findViewById(R.id.iv_like)
+        if (movie.isLiked) {
+            liked.setImageResource(R.drawable.ic_heart_liked)
+        }
+        liked.setOnClickListener {
+            movie.isLiked = !movie.isLiked
+            if (movie.isLiked) {
+                viewModel.saveMovie(movie)
+                liked.setImageResource(R.drawable.ic_heart_liked)
+            } else {
+                viewModel.deleteMovie(movie)
+                liked.setImageResource(R.drawable.ic_heart)
+            }
+        }
+    }
+
+    private fun setStars(rating: Int?, view: View) {
 
         val star1: ImageView = view.findViewById(R.id.ivStar1)
         val star2: ImageView = view.findViewById(R.id.ivStar2)
