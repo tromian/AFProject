@@ -8,8 +8,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
+import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import com.tromian.game.afproject.presentation.view.MainActivity
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
@@ -49,11 +51,11 @@ class FragmentFavourite : Fragment(R.layout.fragment_favourite_movies) {
 
     }
     private fun openFragment(itemId: Int) {
-        val bundle = Bundle()
         val movie = viewModel.movieList.value?.get(itemId)
-        bundle.putSerializable("movie",movie)
-        findNavController().navigate(R.id.fragment_details,bundle)
-
+        if (movie!=null){
+            val action = FragmentFavouriteDirections.actionFragmentFavouriteToFragmentDetails(movie)
+            findNavController().navigate(action)
+        }
     }
 
 }

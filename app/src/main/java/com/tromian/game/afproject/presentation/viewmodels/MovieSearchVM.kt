@@ -19,7 +19,7 @@ class MovieSearchVM(
 
     fun searchMovie(title: String) = viewModelScope.launch(Dispatchers.IO) {
         delay(2_000)
-        val searchResult = repository.searchMovie(title)
+        val searchResult = repository.searchMoviesByTitleInApi(title)
         if (searchResult.isNotEmpty()){
             _movieList.postValue(searchResult)
         }

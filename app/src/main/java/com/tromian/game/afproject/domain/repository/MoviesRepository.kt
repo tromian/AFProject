@@ -5,13 +5,13 @@ import com.tromian.game.afproject.domain.models.Genre
 import com.tromian.game.afproject.domain.models.Movie
 
 interface MoviesRepository {
-    suspend fun getCasts(movieId: Int): List<Actor>
-    suspend fun getGenres(): List<Genre>
-    suspend fun nowPlaying(page : Int): List<Movie>
-    suspend fun saveMovieList(movies: List<Movie>)
-    suspend fun getSavedMovieList() : List<Movie>
-    suspend fun saveMovie(movie: Movie)
-    suspend fun deleteMovie(movie: Movie)
-    suspend fun searchMovie(title : String) : List<Movie>
-    suspend fun getFavourite() : List<Movie>
+    suspend fun getMovieCastsByIdInApi(movieId: Int): List<Actor>
+    suspend fun getAllGenreListFromApi(): List<Genre>
+    suspend fun nowPlayingMoviesFromApiWithPage(page : Int): List<Movie>
+    suspend fun saveMovieListToDB(movies: List<Movie>)
+    suspend fun getSavedMovieListFromDB() : List<Movie>
+    suspend fun saveMovieToDB(movie: Movie)
+    suspend fun deleteMovieFromDB(movie: Movie)
+    suspend fun searchMoviesByTitleInApi(title : String) : List<Movie>
+    suspend fun getFavouriteMovieListFromDB() : List<Movie>
 }

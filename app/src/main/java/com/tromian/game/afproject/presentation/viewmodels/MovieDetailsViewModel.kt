@@ -23,14 +23,14 @@ class MovieDetailsViewModel(
     }
 
     fun getActors(movieId : Int) = viewModelScope.launch(Dispatchers.IO) {
-        _actorList.postValue(repository.getCasts(movieId))
+        _actorList.postValue(repository.getMovieCastsByIdInApi(movieId))
     }
 
     fun saveMovie(movie: Movie) = viewModelScope.launch {
-        repository.saveMovie(movie)
+        repository.saveMovieToDB(movie)
     }
     fun deleteMovie(movie: Movie) = viewModelScope.launch {
-        repository.deleteMovie(movie)
+        repository.deleteMovieFromDB(movie)
     }
 
 }

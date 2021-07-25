@@ -35,6 +35,7 @@ class FragmentSearch : Fragment(R.layout.fragment_search) {
 
         val editText : EditText = view.findViewById(R.id.editText)
         editText.addTextChangedListener {
+
             viewModel.searchMovie(it.toString())
         }
 
@@ -53,10 +54,10 @@ class FragmentSearch : Fragment(R.layout.fragment_search) {
     }
 
     private fun openFragment(itemId: Int) {
-        val bundle = Bundle()
         val movie = viewModel.movieList.value?.get(itemId)
-        bundle.putSerializable("movie",movie)
-        findNavController().navigate(R.id.fragment_details,bundle)
-
+        if (movie!=null){
+            val action = FragmentSearchDirections.actionFragmentSearchToFragmentMoviesDetails(movie)
+            findNavController().navigate(action)
+        }
     }
 }

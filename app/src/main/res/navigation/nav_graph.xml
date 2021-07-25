@@ -15,14 +15,22 @@
             android:id="@+id/action_fragmentMoviesList_to_fragmentMoviesDetails"
             app:destination="@id/fragment_details" />
         <argument
-            android:name="ItemId"
-            app:argType="integer" />
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
     </fragment>
     <fragment
         android:id="@+id/fragment_details"
         android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesDetails"
         android:label="FragmentMoviesDetails"
-        tools:layout="@layout/fragment_movie_details"/>
+        tools:layout="@layout/fragment_movie_details">
+        <argument
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
+    </fragment>
+    <argument
+        android:name="movie"
+        app:argType="com.tromian.game.afproject.domain.models.Movie" />
+
     <fragment
         android:id="@+id/fragment_search"
         android:name="com.tromian.game.afproject.presentation.view.fragments.FragmentSearch"
@@ -31,6 +39,10 @@
         <action
             android:id="@+id/action_fragmentSearch_to_fragmentMoviesDetails"
             app:destination="@id/fragment_details" />
+        <argument
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
+
     </fragment>
     <fragment
         android:id="@+id/fragment_favourite"
@@ -40,5 +52,8 @@
         <action
             android:id="@+id/action_fragmentFavourite_to_fragment_details"
             app:destination="@id/fragment_details" />
+        <argument
+            android:name="movie"
+            app:argType="com.tromian.game.afproject.domain.models.Movie" />
     </fragment>
 </navigation>

@@ -1,12 +1,10 @@
 package com.tromian.game.afproject.data.network.models
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
-@Serializable
 data class JsonGenre(
-        @SerialName("id")
+        @SerializedName("id")
         val id: Int? = null,
-        @SerialName("name")
+        @SerializedName("name")
         val name: String? = null
 )

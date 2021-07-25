@@ -6,10 +6,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tromian.game.afproject.R
-import com.tromian.game.afproject.SomeItemClickListener
 import com.tromian.game.afproject.data.repository.MoviesDataRepository
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
     var repository: MoviesDataRepository? = null
@@ -25,8 +24,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), SomeItemClickLis
         navView.setupWithNavController(navController)
     }
 
-    override fun onBackButtonClicked() {
-        supportFragmentManager.popBackStack()
-    }
 
 }

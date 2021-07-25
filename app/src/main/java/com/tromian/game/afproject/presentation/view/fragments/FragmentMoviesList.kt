@@ -46,11 +46,11 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     }
 
     private fun openFragment(itemId: Int) {
-        val bundle = Bundle()
         val movie = viewModel.movieList.value?.get(itemId)
-        bundle.putSerializable("movie",movie)
-        findNavController().navigate(R.id.fragment_details,bundle)
-
+        if (movie!=null){
+            val action = FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movie)
+            findNavController().navigate(action)
+        }
     }
 
 }
