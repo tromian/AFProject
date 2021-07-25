@@ -18,7 +18,6 @@ class MovieSearchVM(
     val movieList : LiveData<List<Movie>> = _movieList
 
     fun searchMovie(title: String) = viewModelScope.launch(Dispatchers.IO) {
-        delay(2_000)
         val searchResult = repository.searchMoviesByTitleInApi(title)
         if (searchResult.isNotEmpty()){
             _movieList.postValue(searchResult)

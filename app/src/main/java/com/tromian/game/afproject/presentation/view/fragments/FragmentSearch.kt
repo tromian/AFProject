@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.tromian.game.afproject.AppConstants
 import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieSearchVM
+import kotlinx.coroutines.*
 
 class FragmentSearch : Fragment(R.layout.fragment_search) {
 
@@ -21,17 +23,27 @@ class FragmentSearch : Fragment(R.layout.fragment_search) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 return MovieSearchVM(Di.moviesRepo) as T
             }
         }).get(MovieSearchVM::class.java)
 
-        val editText : EditText = view.findViewById(R.id.editText)
-        editText.addTextChangedListener {
+        var job: Job? = null
 
-            viewModel.searchMovie(it.toString())
+        val editText : EditText = view.findViewById(R.id.editText)
+        editText.addTextChangedListener { editable ->
+            job?.cancel()
+            job = CoroutineScope(Dispatchers.Default).launch {
+                delay(1_000)
+                editable?.let {
+                    if (editable.isNotEmpty()){
+                        viewModel.searchMovie(editable.toString())
+                    }
+                }
+            }
+
         }
 
         val adapter = MovieListAdapter(){ itemId ->
