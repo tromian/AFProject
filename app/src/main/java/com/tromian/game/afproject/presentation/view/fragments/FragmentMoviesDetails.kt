@@ -31,7 +31,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
             repository = it
         }
         val safeArgs: FragmentFavouriteArgs by navArgs()
-        movie = safeArgs.movie//arguments?.getSerializable("movie") as Movie
+        movie = safeArgs.movie
         val movieId = movie?.id
         viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
