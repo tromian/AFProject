@@ -51,6 +51,10 @@ dependencies {
     def room_version = "2.3.0"
     def retrofit2_version = "2.9.0"
     def navigationVersion = "2.3.5"
+    def paging_version = "3.0.1"
+
+    // Paging Library
+    implementation "androidx.paging:paging-runtime:$paging_version"
 
     // Navigation Components
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"

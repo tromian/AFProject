@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MovieSearchVM(
@@ -15,11 +14,12 @@ class MovieSearchVM(
 ) : ViewModel() {
 
     private val _movieList = MutableLiveData<List<Movie>>()
-    val movieList : LiveData<List<Movie>> = _movieList
+    val movieList: LiveData<List<Movie>> = _movieList
+    var page = 1
 
     fun searchMovie(title: String) = viewModelScope.launch(Dispatchers.IO) {
-        val searchResult = repository.searchMoviesByTitleInApi(title)
-        if (searchResult.isNotEmpty()){
+        val searchResult = repository.searchMoviesByTitleInApi(page, title)
+        if (searchResult.isNotEmpty()) {
             _movieList.postValue(searchResult)
         }
     }

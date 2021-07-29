@@ -2,11 +2,14 @@ package com.tromian.game.afproject.data.repository
 
 
 import android.content.Context
+import android.media.midi.MidiOutputPort
 import android.util.Log
 import com.tromian.game.afproject.data.db.*
 import com.tromian.game.afproject.data.network.models.JsonMovie
 import com.tromian.game.afproject.data.network.tmdbapi.ApiFactory
 import com.tromian.game.afproject.data.network.tmdbapi.ResponseWrapper
+import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
+import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.domain.Resource
 import com.tromian.game.afproject.domain.models.Actor
 import com.tromian.game.afproject.domain.models.Genre
@@ -16,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-open class MoviesDataRepository(val context: Context) : MoviesRepository {
+class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     private var genres: List<Genre>? = null
     private val db = MoviesDB.getInstance(context)
@@ -84,25 +87,23 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
                     Log.d("MyLog", result.message)
                     return emptyList()
                 }
-
             }
 
         }else emptyList()
 
     }
 
-    override suspend fun nowPlayingMoviesFromApiWithPage(
-        page: Int
+    override suspend fun getTypedListMoviesWithPage(
+        page: Int,
+        type: MovieListType
     ): List<Movie> {
         return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying(page))
+            val result = ResponseWrapper.safeApiResponse(
+                ApiFactory.tmdbApi.getMovieListByListType(type.toTmdbType())
+            )
             when (result) {
                 is Resource.Success ->
-                    if (result.data.movieList == null) {
-                        emptyList()
-                    } else {
                         result.data.movieList.toMovie()
-                    }
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
                     emptyList()
@@ -139,16 +140,12 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
         }
     }
 
-    override suspend fun searchMoviesByTitleInApi(title: String): List<Movie> {
+    override suspend fun searchMoviesByTitleInApi(page: Int,title: String): List<Movie> {
         return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.search(title))
+            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.search(page,title))
             when(result){
                 is Resource.Success ->
-                    if (result.data.results == null) {
-                        emptyList()
-                    } else {
-                        result.data.results.toMovie()
-                    }
+                        result.data.movieList.toMovie()
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
                     emptyList()

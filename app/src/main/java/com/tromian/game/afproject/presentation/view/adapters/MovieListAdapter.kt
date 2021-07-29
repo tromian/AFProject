@@ -4,10 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.tromian.game.afproject.presentation.view.fragments.holders.MovieViewHolder
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.models.Movie
+import com.tromian.game.afproject.presentation.view.fragments.holders.MovieViewHolder
 
 
 class MovieListAdapter(val itemCallback: (itemId: Int) -> Unit)

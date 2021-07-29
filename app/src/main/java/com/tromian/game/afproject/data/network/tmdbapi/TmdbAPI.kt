@@ -11,7 +11,13 @@ interface TmdbAPI {
     @GET("movie/now_playing")
     suspend fun getNowPlaying(
         @Query(value = "page") page: Int = 1
-    ): Response<NowPlaying>
+    ): Response<MovieListResponse>
+
+    @GET("movie/{list_type}")
+    suspend fun getMovieListByListType(
+        @Path(value = "list_type") list_type: ListType = ListType.now_playing,
+        @Query(value = "page") page: Int = 1
+    ): Response<MovieListResponse>
 
     @GET("configuration")
     suspend fun getConfiguration(): Response<ConfigurationResponse>
@@ -23,7 +29,15 @@ interface TmdbAPI {
     suspend fun getGenres(): Response<GenresResponse>
     @GET("search/movie")
     suspend fun search(
+        @Query(value = "page") page: Int = 1,
         @Query(value = "query") query: String
-    ) : Response<SearchResponse>
+    ) : Response<MovieListResponse>
+
+    enum class ListType{
+        now_playing,
+        popular,
+        top_rated,
+        upcoming
+    }
 
 }
