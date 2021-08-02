@@ -27,7 +27,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tv_list_title = view.findViewById(R.id.tv_movie_list_title)
-        tv_list_title.setText(selectListTitle(listType))
+        tv_list_title.setText(setListTitleByType(listType))
         val menuImage: ImageView = view.findViewById(R.id.iv_list_type_popup)
         menuImage.setOnClickListener {
             showPopupMenu(menuImage)
@@ -70,7 +70,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         popupMenu.show()
     }
 
-    private fun selectListTitle(type: MovieListType) : String{
+    private fun setListTitleByType(type: MovieListType) : String{
         return when(type){
             MovieListType.NOW_PLAYING -> getString(R.string.item_now_playing)
             MovieListType.TOP_RATED -> getString(R.string.item_top_rated)
@@ -83,25 +83,25 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         return when (item.itemId) {
             R.id.item_now_playing -> {
                 listType = MovieListType.NOW_PLAYING
-                tv_list_title.setText(R.string.item_now_playing)
+                tv_list_title.setText(setListTitleByType(listType))
                 viewModel.loadMovieList(listType)
                 true
             }
             R.id.item_popular -> {
                 listType = MovieListType.POPULAR
-                tv_list_title.setText(R.string.item_popular)
+                tv_list_title.setText(setListTitleByType(listType))
                 viewModel.loadMovieList(listType)
                 true
             }
             R.id.item_top_rated -> {
                 listType = MovieListType.TOP_RATED
-                tv_list_title.setText(R.string.item_top_rated)
+                tv_list_title.setText(setListTitleByType(listType))
                 viewModel.loadMovieList(listType)
                 true
             }
             R.id.item_upcoming -> {
                 listType = MovieListType.UPCOMING
-                tv_list_title.setText(R.string.item_upcoming)
+                tv_list_title.setText(setListTitleByType(listType))
                 viewModel.loadMovieList(listType)
                 true
             }
