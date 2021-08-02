@@ -12,29 +12,28 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MoviesViewModel(
-    private val repository: MoviesRepository
+    private val repository: MoviesRepository,
+    listType: MovieListType
 ) : ViewModel() {
 
     private val _movieList = MutableLiveData<List<Movie>>()
     val movieList: LiveData<List<Movie>> = _movieList
 
-    private var listType = MovieListType.NOW_PLAYING
-
     var page: Int = 1
 
     init {
-        loadNowPlaying()
+        loadMovieList(listType)
     }
 
 
-    fun loadNowPlaying() = viewModelScope.launch {
-        val localData: List<Movie> = withContext(Dispatchers.IO) {
-            repository.getSavedMovieListFromDB()
-        }
-
-        if (localData.isNotEmpty()) {
-            _movieList.postValue(localData)
-        }
+    fun loadMovieList(listType: MovieListType) = viewModelScope.launch {
+//        val localData: List<Movie> = withContext(Dispatchers.IO) {
+//            repository.getSavedMovieListFromDB()
+//        }
+//
+//        if (localData.isNotEmpty()) {
+//            _movieList.postValue(localData)
+//        }
         val remoteData: List<Movie> = withContext(Dispatchers.IO) {
             repository.getTypedListMoviesWithPage(page, listType)
 
@@ -42,9 +41,9 @@ class MoviesViewModel(
 
         if (remoteData.isNotEmpty()) {
             withContext(Dispatchers.IO) {
-                repository.saveMovieListToDB(remoteData)
-                val updatedLocalData = repository.getSavedMovieListFromDB()
-                _movieList.postValue(updatedLocalData)
+                // repository.saveMovieListToDB(remoteData)
+                //val updatedLocalData = repository.getSavedMovieListFromDB()
+                _movieList.postValue(remoteData)
             }
         }
 
