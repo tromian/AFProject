@@ -7,22 +7,24 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
+import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
-    private lateinit var viewModel: MoviesViewModel
     private var listType = MovieListType.POPULAR
     lateinit var tv_list_title: TextView
+
+    private val viewModel by viewModels<MoviesViewModel> {
+        ViewModelFactory(listType)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,12 +34,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         menuImage.setOnClickListener {
             showPopupMenu(menuImage)
         }
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MoviesViewModel(Di.moviesRepo,listType) as T
-            }
-        }).get(MoviesViewModel::class.java)
 
         val adapter = MovieListAdapter() { itemId ->
             openFragment(itemId)

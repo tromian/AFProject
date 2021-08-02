@@ -36,13 +36,12 @@ class MoviesViewModel(
 //        }
         val remoteData: List<Movie> = withContext(Dispatchers.IO) {
             repository.getTypedListMoviesWithPage(page, listType)
-
         }
 
         if (remoteData.isNotEmpty()) {
             withContext(Dispatchers.IO) {
-                // repository.saveMovieListToDB(remoteData)
-                //val updatedLocalData = repository.getSavedMovieListFromDB()
+                 //repository.saveMovieListToDB(remoteData)
+                val updatedLocalData = repository.getSavedMovieListFromDB()
                 _movieList.postValue(remoteData)
             }
         }

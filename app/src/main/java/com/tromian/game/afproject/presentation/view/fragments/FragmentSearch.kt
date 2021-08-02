@@ -5,30 +5,24 @@ import android.view.View
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.tromian.game.afproject.AppConstants
-import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieSearchVM
+import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 import kotlinx.coroutines.*
 
 class FragmentSearch : Fragment(R.layout.fragment_search) {
 
-    lateinit var viewModel : MovieSearchVM
+    private val viewModel by viewModels<MovieSearchVM>(){
+        ViewModelFactory()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MovieSearchVM(Di.moviesRepo) as T
-            }
-        }).get(MovieSearchVM::class.java)
 
         var job: Job? = null
 

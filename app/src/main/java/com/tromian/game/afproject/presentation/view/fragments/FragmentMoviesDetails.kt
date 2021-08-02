@@ -6,35 +6,31 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsViewModel
+import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
-    private var movie: Movie? = null
-    private lateinit var viewModel: MovieDetailsViewModel
+
+    private lateinit var movie: Movie
+    private val viewModel by viewModels<MovieDetailsViewModel> {
+        ViewModelFactory(movieId = movie.id)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val safeArgs: FragmentFavouriteArgs by navArgs()
         movie = safeArgs.movie
-        val movieId = movie?.id
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return movieId?.let { MovieDetailsViewModel(it, Di.moviesRepo) } as T
-            }
-        }).get(MovieDetailsViewModel::class.java)
-        movie?.let { bind(view, it) }
 
+        bind(view, movie)
 
         val rvActorsList = view.findViewById<RecyclerView>(R.id.rvActorsList)
         val adapter = ActorsListAdapter(requireContext())
@@ -53,12 +49,6 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
             }
         }
 
-    }
-
-
-    override fun onDetach() {
-        super.onDetach()
-        movie = null
     }
 
 

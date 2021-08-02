@@ -22,7 +22,7 @@ class MovieDetailsViewModel(
         getActors(movieId)
     }
 
-    fun getActors(movieId : Int) = viewModelScope.launch(Dispatchers.IO) {
+    private fun getActors(movieId : Int) = viewModelScope.launch(Dispatchers.IO) {
         _actorList.postValue(repository.getMovieCastsByIdInApi(movieId))
     }
 
