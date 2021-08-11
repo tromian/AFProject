@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ApiFactory {
+object TMDBService {
 
     private val authInterceptor = Interceptor { chain ->
         val newUrl = chain.request().url

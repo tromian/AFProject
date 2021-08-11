@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -12,27 +13,38 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
+import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
+import javax.inject.Inject
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private var listType = MovieListType.POPULAR
-    lateinit var tv_list_title: TextView
+    private lateinit var tv_list_title: TextView
+
+    @Inject
+    lateinit var factory: ViewModelFactory.Factory
 
     private val viewModel by viewModels<MoviesViewModel> {
-        ViewModelFactory(listType)
+        factory.create(listType = listType)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tv_list_title = view.findViewById(R.id.tv_movie_list_title)
-        tv_list_title.setText(setListTitleByType(listType))
+        tv_list_title.text = setListTitleByType(listType)
+
         val menuImage: ImageView = view.findViewById(R.id.iv_list_type_popup)
         menuImage.setOnClickListener {
-            showPopupMenu(menuImage)
+           showPopupMenu(menuImage)
         }
 
         val adapter = MovieListAdapter() { itemId ->

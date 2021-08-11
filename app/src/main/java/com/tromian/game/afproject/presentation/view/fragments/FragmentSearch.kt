@@ -1,5 +1,6 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -10,15 +11,25 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
+import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieSearchVM
 import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 class FragmentSearch : Fragment(R.layout.fragment_search) {
 
+    @Inject
+    lateinit var factory: ViewModelFactory.Factory
+
     private val viewModel by viewModels<MovieSearchVM>(){
-        ViewModelFactory()
+        factory.create()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

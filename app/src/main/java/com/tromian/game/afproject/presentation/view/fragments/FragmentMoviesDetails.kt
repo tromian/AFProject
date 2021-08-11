@@ -1,6 +1,7 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -13,16 +14,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tromian.game.afproject.R
+import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.presentation.view.adapters.ActorsListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieDetailsViewModel
 import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
+import javax.inject.Inject
 
 class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
 
     private lateinit var movie: Movie
+
+    @Inject
+    lateinit var factory: ViewModelFactory.Factory
+
     private val viewModel by viewModels<MovieDetailsViewModel> {
-        ViewModelFactory(movieId = movie.id)
+        factory.create(movieId = movie.id)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

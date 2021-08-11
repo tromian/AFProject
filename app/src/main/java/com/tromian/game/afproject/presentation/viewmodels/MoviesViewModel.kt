@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class MoviesViewModel(
     private val repository: MoviesRepository,
-    listType: MovieListType
+    private val listType: MovieListType
 ) : ViewModel() {
 
     private val _movieList = MutableLiveData<List<Movie>>()
