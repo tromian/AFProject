@@ -2,7 +2,7 @@ package com.tromian.game.afproject
 
 
 import android.annotation.SuppressLint
-import com.tromian.game.afproject.MoviesApp.Companion.context
+import android.content.Context
 import com.tromian.game.afproject.data.db.MoviesDB
 import com.tromian.game.afproject.data.network.tmdbapi.TMDBService
 import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
@@ -12,10 +12,7 @@ import com.tromian.game.afproject.presentation.view.fragments.FragmentFavourite
 import com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesDetails
 import com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesList
 import com.tromian.game.afproject.presentation.view.fragments.FragmentSearch
-import dagger.Binds
-import dagger.Component
-import dagger.Module
-import dagger.Provides
+import dagger.*
 
 @Component(modules = [AppModule::class])
 interface AppComponent{
@@ -24,6 +21,14 @@ interface AppComponent{
     fun inject(fragment: FragmentMoviesDetails)
     fun inject(fragment: FragmentSearch)
     fun inject(fragment: FragmentFavourite)
+
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun context(context: Context) : Builder
+
+        fun build() : AppComponent
+    }
 
 }
 
@@ -34,7 +39,8 @@ class AppModule {
 
     @Provides
     fun provideRepoImpl( service : TmdbAPI,
-                         localDB: MoviesDB
+                         localDB: MoviesDB,
+                         context: Context
     ) : MoviesDataRepository {
         return MoviesDataRepository(service, localDB, context)
     }
@@ -53,7 +59,7 @@ class NetworkModule {
 @Module
 class LocalDBModule {
     @Provides
-    fun provideLocalDB(): MoviesDB {
+    fun provideLocalDB(context: Context): MoviesDB {
         return MoviesDB.getInstance(context)
     }
 
