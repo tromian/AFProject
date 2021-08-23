@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
@@ -32,12 +31,13 @@ class FragmentFavourite : Fragment(R.layout.fragment_favourite_movies) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val adapter = MovieListAdapter() { itemId ->
             openFragment(itemId)
         }
 
-        viewModel.movieList.observe(requireActivity(), Observer {
+        viewModel.loadFavourites()
+
+        viewModel.movieList.observe(requireActivity(), {
             adapter.submitList(it)
         })
 

@@ -18,7 +18,7 @@ class FavouriteViewModel(
         loadFavourites()
     }
 
-    private fun loadFavourites() = viewModelScope.launch {
+    fun loadFavourites() = viewModelScope.launch {
         val localFavouriteList = repository.getFavouriteMovieListFromDB()
         _movieList.postValue(localFavouriteList)
     }

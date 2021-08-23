@@ -9,15 +9,16 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tromian.game.afproject.R
 import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.domain.MovieListType
-import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
+import com.tromian.game.afproject.presentation.view.adapters.MoviePagingAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
+import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
@@ -32,6 +33,12 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         factory.create(listType = listType)
     }
 
+    private val adapter by lazy(LazyThreadSafetyMode.NONE) {
+        MoviePagingAdapter() { itemId ->
+            openFragment(itemId)
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         context.appComponent.inject(this)
@@ -44,29 +51,33 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
         val menuImage: ImageView = view.findViewById(R.id.iv_list_type_popup)
         menuImage.setOnClickListener {
-           showPopupMenu(menuImage)
+            showPopupMenu(menuImage)
         }
 
-        val adapter = MovieListAdapter() { itemId ->
-            openFragment(itemId)
-        }
-        viewModel.movieList.observe(requireActivity(), Observer {
-                adapter.submitList(it)
-        })
+//        val adapter = MovieListAdapter() { itemId ->
+//            openFragment(itemId)
+//        }
+//        viewModel.movieList.observe(requireActivity(), Observer {
+//                adapter.submitList(it)
+//        })
 
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
-
         rvMovieList.adapter = adapter
+        lifecycleScope.launchWhenStarted {
+            viewModel._movieListFlow
+                .collectLatest {
+                    adapter.submitData(it)
+                }
+        }
 
     }
 
     private fun openFragment(itemId: Int) {
-
-        val movie = viewModel.movieList.value?.get(itemId)
-        if (movie!=null){
-            val action = FragmentMoviesListDirections.actionFragmentMoviesListToFragmentMoviesDetails(movie)
-            findNavController().navigate(action)
-        }
+        val movie = adapter.snapshot().items[itemId]
+        //val movie = viewModel.movieList.value?.get(itemId)
+        val action = FragmentMoviesListDirections
+            .actionFragmentMoviesListToFragmentMoviesDetails(movie)
+        findNavController().navigate(action)
     }
 
     private fun showPopupMenu(view: View) {
@@ -92,25 +103,29 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
             R.id.item_now_playing -> {
                 listType = MovieListType.NOW_PLAYING
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.loadMovieList(listType)
+                viewModel.listTypeMovies = listType
+                //viewModel.loadMovieList(listType)
                 true
             }
             R.id.item_popular -> {
                 listType = MovieListType.POPULAR
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.loadMovieList(listType)
+                viewModel.listTypeMovies = listType
+                //viewModel.loadMovieList(listType)
                 true
             }
             R.id.item_top_rated -> {
                 listType = MovieListType.TOP_RATED
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.loadMovieList(listType)
+                viewModel.listTypeMovies = listType
+                //viewModel.loadMovieList(listType)
                 true
             }
             R.id.item_upcoming -> {
                 listType = MovieListType.UPCOMING
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.loadMovieList(listType)
+                viewModel.listTypeMovies = listType
+                //viewModel.loadMovieList(listType)
                 true
             }
             else -> false

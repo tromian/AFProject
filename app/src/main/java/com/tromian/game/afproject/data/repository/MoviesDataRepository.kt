@@ -3,10 +3,17 @@ package com.tromian.game.afproject.data.repository
 
 import android.content.Context
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
+import com.tromian.game.afproject.AppConstants.Companion.NETWORK_PAGE_SIZE
+import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.data.db.*
 import com.tromian.game.afproject.data.network.models.JsonMovie
 import com.tromian.game.afproject.data.network.tmdbapi.ResponseWrapper
 import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
+import com.tromian.game.afproject.data.paging.MoviePagingSource
 import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.domain.Resource
 import com.tromian.game.afproject.domain.models.Actor
@@ -15,6 +22,9 @@ import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,15 +35,32 @@ class MoviesDataRepository @Inject constructor(
 ) : MoviesRepository {
 
     private var genres: List<Genre>? = null
-    //private val db = MoviesDB.getInstance(context)
+
+    @Inject
+    lateinit var pagingSourceFactory: MoviePagingSource.Factory
 
     init {
+        context.appComponent.inject(this)
         if (genres == null) {
             CoroutineScope(Dispatchers.IO).launch {
                 getMovieGenreList()
             }
         }
     }
+
+    override fun getMovieListResultStream(listType: MovieListType): Flow<PagingData<Movie>> {
+        return if (ResponseWrapper.isNetworkConnected(context)) {
+            Pager(
+                config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
+                pagingSourceFactory = { pagingSourceFactory.create(listType.toTmdbType()) }
+            ).flow
+                .map { pagingData ->
+                    pagingData.map { movie -> movie.toMovie() }
+                }
+        } else flowOf(PagingData.empty())
+
+    }
+
 
     override suspend fun getFavouriteMovieListFromDB(): List<Movie> {
         return localDB.movieDao().getFavourite().map {
@@ -169,6 +196,35 @@ class MoviesDataRepository @Inject constructor(
             }
             result
         } else ""
+    }
+
+    private fun JsonMovie.toMovie(): Movie {
+        val newId: Int? = this.id
+        val newTitle: String? = this.title
+        val newOverview: String? = this.overview
+        return if (newId != null && newTitle != null && newOverview != null) {
+            Movie(
+                id = newId,
+                title = newTitle,
+                genres = this.genreIds?.let { id -> loadGenres(id) },
+                imageUrl = getPosterUrl() + this.posterPath,
+                reviewCount = this.voteCount,
+                pgAge = this.adult?.let { adult -> checkAdultContent(adult) },
+                rating = ratingDoubleToInt(this.voteAverage),
+                storyLine = newOverview
+            )
+        } else {
+            Movie(
+                id = 10000,
+                title = "Title",
+                genres = this.genreIds?.let { id -> loadGenres(id) },
+                imageUrl = getPosterUrl() + this.posterPath,
+                reviewCount = this.voteCount,
+                pgAge = this.adult?.let { adult -> checkAdultContent(adult) },
+                rating = ratingDoubleToInt(this.voteAverage),
+                storyLine = "nothing"
+            )
+        }
     }
 
     private fun List<JsonMovie>.toMovie(): List<Movie> {

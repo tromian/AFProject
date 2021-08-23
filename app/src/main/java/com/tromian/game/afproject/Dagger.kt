@@ -13,14 +13,17 @@ import com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesDeta
 import com.tromian.game.afproject.presentation.view.fragments.FragmentMoviesList
 import com.tromian.game.afproject.presentation.view.fragments.FragmentSearch
 import dagger.*
+import javax.inject.Singleton
 
 @Component(modules = [AppModule::class])
+@Singleton
 interface AppComponent{
 
     fun inject(fragment: FragmentMoviesList)
     fun inject(fragment: FragmentMoviesDetails)
     fun inject(fragment: FragmentSearch)
     fun inject(fragment: FragmentFavourite)
+    fun inject(repository: MoviesDataRepository)
 
     @Component.Builder
     interface Builder {
@@ -59,6 +62,7 @@ class NetworkModule {
 @Module
 class LocalDBModule {
     @Provides
+    @Singleton
     fun provideLocalDB(context: Context): MoviesDB {
         return MoviesDB.getInstance(context)
     }
