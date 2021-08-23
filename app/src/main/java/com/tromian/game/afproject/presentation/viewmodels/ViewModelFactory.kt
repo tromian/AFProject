@@ -16,7 +16,7 @@ class ViewModelFactory @AssistedInject constructor(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         val viewModel = when (modelClass) {
             MoviesViewModel::class.java -> {
-                MoviesViewModel(repository, listType)
+                MoviesViewModel(repository)
             }
             MovieSearchVM::class.java -> {
                 MovieSearchVM(repository)

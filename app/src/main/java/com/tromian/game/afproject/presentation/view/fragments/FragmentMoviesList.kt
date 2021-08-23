@@ -19,6 +19,7 @@ import com.tromian.game.afproject.presentation.view.adapters.MoviePagingAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MoviesViewModel
 import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
@@ -54,17 +55,10 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
             showPopupMenu(menuImage)
         }
 
-//        val adapter = MovieListAdapter() { itemId ->
-//            openFragment(itemId)
-//        }
-//        viewModel.movieList.observe(requireActivity(), Observer {
-//                adapter.submitList(it)
-//        })
-
         val rvMovieList = view.findViewById<RecyclerView>(R.id.rvMovieList)
         rvMovieList.adapter = adapter
         lifecycleScope.launchWhenStarted {
-            viewModel._movieListFlow
+            viewModel.loadList(listType)
                 .collectLatest {
                     adapter.submitData(it)
                 }
@@ -89,8 +83,8 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         popupMenu.show()
     }
 
-    private fun setListTitleByType(type: MovieListType) : String{
-        return when(type){
+    private fun setListTitleByType(type: MovieListType): String {
+        return when (type) {
             MovieListType.NOW_PLAYING -> getString(R.string.item_now_playing)
             MovieListType.TOP_RATED -> getString(R.string.item_top_rated)
             MovieListType.POPULAR -> getString(R.string.item_popular)
@@ -98,34 +92,50 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         }
     }
 
-    private fun menuItemClicked(item: MenuItem): Boolean{
+    private fun menuItemClicked(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.item_now_playing -> {
                 listType = MovieListType.NOW_PLAYING
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.listTypeMovies = listType
-                //viewModel.loadMovieList(listType)
+                lifecycleScope.launch {
+                    viewModel.loadList(listType)
+                        .collectLatest {
+                            adapter.submitData(it)
+                        }
+                }
                 true
             }
             R.id.item_popular -> {
                 listType = MovieListType.POPULAR
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.listTypeMovies = listType
-                //viewModel.loadMovieList(listType)
+                lifecycleScope.launch {
+                    viewModel.loadList(listType)
+                        .collectLatest {
+                            adapter.submitData(it)
+                        }
+                }
                 true
             }
             R.id.item_top_rated -> {
                 listType = MovieListType.TOP_RATED
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.listTypeMovies = listType
-                //viewModel.loadMovieList(listType)
+                lifecycleScope.launch {
+                    viewModel.loadList(listType)
+                        .collectLatest {
+                            adapter.submitData(it)
+                        }
+                }
                 true
             }
             R.id.item_upcoming -> {
                 listType = MovieListType.UPCOMING
                 tv_list_title.setText(setListTitleByType(listType))
-                viewModel.listTypeMovies = listType
-                //viewModel.loadMovieList(listType)
+                lifecycleScope.launch {
+                    viewModel.loadList(listType)
+                        .collectLatest {
+                            adapter.submitData(it)
+                        }
+                }
                 true
             }
             else -> false
