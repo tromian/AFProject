@@ -17,10 +17,12 @@ class MovieSearchVM(
     val movieList: LiveData<List<Movie>> = _movieList
     var page = 1
 
-    fun searchMovie(title: String) = viewModelScope.launch(Dispatchers.IO) {
-        val searchResult = repository.searchMoviesByTitleInApi(page, title)
-        if (searchResult.isNotEmpty()) {
-            _movieList.postValue(searchResult)
+    fun searchMovie(title: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val searchResult = repository.searchMoviesByTitleInApi(page, title)
+            if (searchResult.isNotEmpty()) {
+                _movieList.postValue(searchResult)
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 package com.tromian.game.afproject.data.repository
 
 
-import android.content.Context
+import android.app.Application
 import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -31,7 +31,7 @@ import javax.inject.Inject
 class MoviesDataRepository @Inject constructor(
     private val service: TmdbAPI,
     private val localDB: MoviesDB,
-    private val context: Context
+    private val context: Application
 ) : MoviesRepository {
 
     private var genres: List<Genre>? = null
@@ -215,14 +215,14 @@ class MoviesDataRepository @Inject constructor(
             )
         } else {
             Movie(
-                id = 10000,
-                title = "Title",
+                id = newId ?: 10000,
+                title = newTitle ?: "Title",
                 genres = this.genreIds?.let { id -> loadGenres(id) },
                 imageUrl = getPosterUrl() + this.posterPath,
                 reviewCount = this.voteCount,
                 pgAge = this.adult?.let { adult -> checkAdultContent(adult) },
                 rating = ratingDoubleToInt(this.voteAverage),
-                storyLine = "nothing"
+                storyLine = newOverview ?: "nothing"
             )
         }
     }

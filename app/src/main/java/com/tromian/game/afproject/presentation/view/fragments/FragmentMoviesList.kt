@@ -68,7 +68,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private fun openFragment(itemId: Int) {
         val movie = adapter.snapshot().items[itemId]
-        //val movie = viewModel.movieList.value?.get(itemId)
         val action = FragmentMoviesListDirections
             .actionFragmentMoviesListToFragmentMoviesDetails(movie)
         findNavController().navigate(action)
@@ -96,51 +95,34 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         return when (item.itemId) {
             R.id.item_now_playing -> {
                 listType = MovieListType.NOW_PLAYING
-                tv_list_title.setText(setListTitleByType(listType))
-                lifecycleScope.launch {
-                    viewModel.loadList(listType)
-                        .collectLatest {
-                            adapter.submitData(it)
-                        }
-                }
-                true
+                listBySelectedTypeUpdated(listType)
             }
             R.id.item_popular -> {
                 listType = MovieListType.POPULAR
-                tv_list_title.setText(setListTitleByType(listType))
-                lifecycleScope.launch {
-                    viewModel.loadList(listType)
-                        .collectLatest {
-                            adapter.submitData(it)
-                        }
-                }
-                true
+                listBySelectedTypeUpdated(listType)
             }
             R.id.item_top_rated -> {
                 listType = MovieListType.TOP_RATED
-                tv_list_title.setText(setListTitleByType(listType))
-                lifecycleScope.launch {
-                    viewModel.loadList(listType)
-                        .collectLatest {
-                            adapter.submitData(it)
-                        }
-                }
-                true
+                listBySelectedTypeUpdated(listType)
             }
             R.id.item_upcoming -> {
                 listType = MovieListType.UPCOMING
-                tv_list_title.setText(setListTitleByType(listType))
-                lifecycleScope.launch {
-                    viewModel.loadList(listType)
-                        .collectLatest {
-                            adapter.submitData(it)
-                        }
-                }
-                true
+                listBySelectedTypeUpdated(listType)
             }
             else -> false
         }
 
+    }
+
+    private fun listBySelectedTypeUpdated(listType: MovieListType): Boolean {
+        tv_list_title.setText(setListTitleByType(listType))
+        lifecycleScope.launch {
+            viewModel.loadList(listType)
+                .collectLatest {
+                    adapter.submitData(it)
+                }
+        }
+        return true
     }
 
 }

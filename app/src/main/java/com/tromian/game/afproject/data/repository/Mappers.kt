@@ -25,12 +25,12 @@ fun MovieEntity.toMovie(): Movie {
     )
 }
 
-fun MovieListType.toTmdbType() : TmdbAPI.ListType {
+fun MovieListType.toTmdbType(): String {
     return when (this) {
-        MovieListType.NOW_PLAYING -> TmdbAPI.ListType.now_playing
-        MovieListType.POPULAR -> TmdbAPI.ListType.popular
-        MovieListType.TOP_RATED -> TmdbAPI.ListType.top_rated
-        MovieListType.UPCOMING -> TmdbAPI.ListType.upcoming
+        MovieListType.NOW_PLAYING -> TmdbAPI.ListType.NOW_PLAYING.listType
+        MovieListType.POPULAR -> TmdbAPI.ListType.POPULAR.listType
+        MovieListType.TOP_RATED -> TmdbAPI.ListType.TOP_RATED.listType
+        MovieListType.UPCOMING -> TmdbAPI.ListType.UPCOMING.listType
     }
 }
 

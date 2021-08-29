@@ -11,6 +11,8 @@ import com.bumptech.glide.signature.ObjectKey
 
 @GlideModule
 class MoviesAppModule : AppGlideModule() {
+
+
     @SuppressLint("CheckResult")
     override fun applyOptions(context: Context, builder: GlideBuilder) {
         super.applyOptions(context, builder)

@@ -15,8 +15,9 @@ private const val TMDB_STARTING_PAGE_INDEX = 1
 
 class MoviePagingSource @AssistedInject constructor(
     private val service: TmdbAPI,
-    @Assisted("listType") private val listType: TmdbAPI.ListType
+    @Assisted("listType") private val listType: String
 ) : PagingSource<Int, JsonMovie>() {
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, JsonMovie> {
         val position = params.key ?: TMDB_STARTING_PAGE_INDEX
 
@@ -62,7 +63,7 @@ class MoviePagingSource @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(@Assisted("listType") listType: TmdbAPI.ListType): MoviePagingSource
+        fun create(@Assisted("listType") listType: String): MoviePagingSource
     }
 
 }

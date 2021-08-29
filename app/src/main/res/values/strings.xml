@@ -19,4 +19,5 @@
     <string name="item_popular">Popular</string>
     <string name="item_upcoming">Upcoming</string>
     <string name="item_top_rated">Top Rated</string>
+    <string name="et_search_hint">Print movie name</string>
 </resources>
