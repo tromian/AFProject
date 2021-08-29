@@ -27,6 +27,8 @@ Educational application, based on public API (https://www.themoviedb.org/) as an
 * ViewModel
 * LiveData
 * Navigation
+* Paging
+* Flow
 * Retrofit2
 * Room
 * Glide
