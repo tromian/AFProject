@@ -6,6 +6,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.tromian.game.afproject.R
+import java.util.concurrent.Flow
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 

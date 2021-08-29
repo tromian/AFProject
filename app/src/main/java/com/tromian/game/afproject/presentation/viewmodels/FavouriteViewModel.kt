@@ -12,15 +12,17 @@ class FavouriteViewModel(
     private val repository: MoviesRepository
 ) : ViewModel() {
     private val _movieList = MutableLiveData<List<Movie>>()
-    val movieList : LiveData<List<Movie>> = _movieList
+    val movieList: LiveData<List<Movie>> = _movieList
 
     init {
         loadFavourites()
     }
 
-    private fun loadFavourites() = viewModelScope.launch {
-        val localFavouriteList = repository.getFavouriteMovieListFromDB()
-        _movieList.postValue(localFavouriteList)
+    fun loadFavourites() {
+        viewModelScope.launch {
+            val localFavouriteList = repository.getFavouriteMovieListFromDB()
+            _movieList.postValue(localFavouriteList)
+        }
     }
 
 }

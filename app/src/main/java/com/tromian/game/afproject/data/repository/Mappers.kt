@@ -5,6 +5,8 @@ import com.tromian.game.afproject.data.db.entityes.GenreEntity
 import com.tromian.game.afproject.data.db.entityes.MovieEntity
 import com.tromian.game.afproject.data.network.models.JsonActor
 import com.tromian.game.afproject.data.network.models.JsonGenre
+import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
+import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.domain.models.Actor
 import com.tromian.game.afproject.domain.models.Genre
 import com.tromian.game.afproject.domain.models.Movie
@@ -21,6 +23,15 @@ fun MovieEntity.toMovie(): Movie {
         storyLine = this.storyLine,
         isLiked = this.isLiked
     )
+}
+
+fun MovieListType.toTmdbType(): String {
+    return when (this) {
+        MovieListType.NOW_PLAYING -> TmdbAPI.ListType.NOW_PLAYING.listType
+        MovieListType.POPULAR -> TmdbAPI.ListType.POPULAR.listType
+        MovieListType.TOP_RATED -> TmdbAPI.ListType.TOP_RATED.listType
+        MovieListType.UPCOMING -> TmdbAPI.ListType.UPCOMING.listType
+    }
 }
 
 fun Movie.toMovieEntity(): MovieEntity {

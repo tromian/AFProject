@@ -15,7 +15,8 @@ import com.tromian.game.afproject.data.db.entityes.MovieEntity
     entities = [MovieEntity::class,
         ActorEntity::class,
         GenreEntity::class],
-    version = 3
+    version = 3,
+    exportSchema = false
 )
 abstract class MoviesDB : RoomDatabase() {
 

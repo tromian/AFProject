@@ -1,12 +1,20 @@
 package com.tromian.game.afproject.data.repository
 
 
-import android.content.Context
+import android.app.Application
 import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
+import com.tromian.game.afproject.AppConstants.Companion.NETWORK_PAGE_SIZE
+import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.data.db.*
 import com.tromian.game.afproject.data.network.models.JsonMovie
-import com.tromian.game.afproject.data.network.tmdbapi.ApiFactory
 import com.tromian.game.afproject.data.network.tmdbapi.ResponseWrapper
+import com.tromian.game.afproject.data.network.tmdbapi.TmdbAPI
+import com.tromian.game.afproject.data.paging.MoviePagingSource
+import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.domain.Resource
 import com.tromian.game.afproject.domain.models.Actor
 import com.tromian.game.afproject.domain.models.Genre
@@ -14,45 +22,70 @@ import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-open class MoviesDataRepository(val context: Context) : MoviesRepository {
+class MoviesDataRepository @Inject constructor(
+    private val service: TmdbAPI,
+    private val localDB: MoviesDB,
+    private val context: Application
+) : MoviesRepository {
 
     private var genres: List<Genre>? = null
-    private val db = MoviesDB.getInstance(context)
+
+    @Inject
+    lateinit var pagingSourceFactory: MoviePagingSource.Factory
 
     init {
+        context.appComponent.inject(this)
         if (genres == null) {
-            CoroutineScope(Dispatchers.IO).launch{
+            CoroutineScope(Dispatchers.IO).launch {
                 getMovieGenreList()
             }
         }
     }
 
-    override suspend fun getFavouriteMovieListFromDB() : List<Movie>{
-        return db.movieDao().getFavourite().map {
+    override fun getMovieListResultStream(listType: MovieListType): Flow<PagingData<Movie>> {
+        return if (ResponseWrapper.isNetworkConnected(context)) {
+            Pager(
+                config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
+                pagingSourceFactory = { pagingSourceFactory.create(listType.toTmdbType()) }
+            ).flow
+                .map { pagingData ->
+                    pagingData.map { movie -> movie.toMovie() }
+                }
+        } else flowOf(PagingData.empty())
+
+    }
+
+
+    override suspend fun getFavouriteMovieListFromDB(): List<Movie> {
+        return localDB.movieDao().getFavourite().map {
             it.toMovie()
         }
     }
 
-    suspend fun getMovieGenreList(){
-        val localGenres = db.genreDao().getGenreList()
-        if (localGenres.isNotEmpty()){
+    suspend fun getMovieGenreList() {
+        val localGenres = localDB.genreDao().getGenreList()
+        if (localGenres.isNotEmpty()) {
             genres = localGenres.map {
                 it.toGenre()
             }
-        }else{
+        } else {
             val remoteGenres = getAllGenreListFromApi()
             genres = remoteGenres
-            db.genreDao().insertListGenre(remoteGenres.map {
+            localDB.genreDao().insertListGenre(remoteGenres.map {
                 it.toGenreEntity()
             })
         }
     }
 
     override suspend fun getMovieCastsByIdInApi(movieId: Int): List<Actor> {
-        return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getCredits(movieId))
+        return if (ResponseWrapper.isNetworkConnected(context)) {
+            val result = ResponseWrapper.safeApiResponse(service.getCredits(movieId))
             when (result) {
                 is Resource.Success ->
                     if (result.data.actorList == null) {
@@ -66,13 +99,13 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
                 }
             }
 
-        }else emptyList()
+        } else emptyList()
 
     }
 
     override suspend fun getAllGenreListFromApi(): List<Genre> {
-        return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getGenres())
+        return if (ResponseWrapper.isNetworkConnected(context)) {
+            val result = ResponseWrapper.safeApiResponse(service.getGenres())
             when (result) {
                 is Resource.Success ->
                     if (result.data.genres == null) {
@@ -84,32 +117,30 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
                     Log.d("MyLog", result.message)
                     return emptyList()
                 }
-
             }
 
-        }else emptyList()
+        } else emptyList()
 
     }
 
-    override suspend fun nowPlayingMoviesFromApiWithPage(
-        page: Int
+    override suspend fun getTypedListMoviesWithPage(
+        page: Int,
+        type: MovieListType
     ): List<Movie> {
-        return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.getNowPlaying(page))
+        return if (ResponseWrapper.isNetworkConnected(context)) {
+            val result = ResponseWrapper.safeApiResponse(
+                service.getMovieListByListType(type.toTmdbType())
+            )
             when (result) {
                 is Resource.Success ->
-                    if (result.data.movieList == null) {
-                        emptyList()
-                    } else {
-                        result.data.movieList.toMovie()
-                    }
+                    result.data.movieList.toMovie()
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
                     emptyList()
                 }
             }
 
-        }else emptyList()
+        } else emptyList()
 
     }
 
@@ -117,11 +148,11 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
         val entities = movies.map {
             it.toMovieEntity()
         }
-        db.movieDao().insertMovies(entities)
+        localDB.movieDao().insertMovies(entities)
     }
 
     override suspend fun getSavedMovieListFromDB(): List<Movie> {
-        val movies = db.movieDao().getNowPlaying().map {
+        val movies = localDB.movieDao().getNowPlaying().map {
             it.toMovie()
         }
         return movies
@@ -129,26 +160,22 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
 
     override suspend fun saveMovieToDB(movie: Movie) {
         movie.toMovieEntity().also {
-            db.movieDao().insertMovie(it)
+            localDB.movieDao().insertMovie(it)
         }
     }
 
     override suspend fun deleteMovieFromDB(movie: Movie) {
         movie.toMovieEntity().also {
-            db.movieDao().deleteMovie(it)
+            localDB.movieDao().deleteMovie(it)
         }
     }
 
-    override suspend fun searchMoviesByTitleInApi(title: String): List<Movie> {
-        return if (ResponseWrapper.isNetworkConnected(context)){
-            val result = ResponseWrapper.safeApiResponse(ApiFactory.tmdbApi.search(title))
-            when(result){
+    override suspend fun searchMoviesByTitleInApi(page: Int, title: String): List<Movie> {
+        return if (ResponseWrapper.isNetworkConnected(context)) {
+            val result = ResponseWrapper.safeApiResponse(service.search(page, title))
+            when (result) {
                 is Resource.Success ->
-                    if (result.data.results == null) {
-                        emptyList()
-                    } else {
-                        result.data.results.toMovie()
-                    }
+                    result.data.movieList.toMovie()
                 is Resource.Error -> {
                     Log.d("MyLog", result.message)
                     emptyList()
@@ -169,6 +196,35 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
             }
             result
         } else ""
+    }
+
+    private fun JsonMovie.toMovie(): Movie {
+        val newId: Int? = this.id
+        val newTitle: String? = this.title
+        val newOverview: String? = this.overview
+        return if (newId != null && newTitle != null && newOverview != null) {
+            Movie(
+                id = newId,
+                title = newTitle,
+                genres = this.genreIds?.let { id -> loadGenres(id) },
+                imageUrl = getPosterUrl() + this.posterPath,
+                reviewCount = this.voteCount,
+                pgAge = this.adult?.let { adult -> checkAdultContent(adult) },
+                rating = ratingDoubleToInt(this.voteAverage),
+                storyLine = newOverview
+            )
+        } else {
+            Movie(
+                id = newId ?: 10000,
+                title = newTitle ?: "Title",
+                genres = this.genreIds?.let { id -> loadGenres(id) },
+                imageUrl = getPosterUrl() + this.posterPath,
+                reviewCount = this.voteCount,
+                pgAge = this.adult?.let { adult -> checkAdultContent(adult) },
+                rating = ratingDoubleToInt(this.voteAverage),
+                storyLine = newOverview ?: "nothing"
+            )
+        }
     }
 
     private fun List<JsonMovie>.toMovie(): List<Movie> {
@@ -194,5 +250,6 @@ open class MoviesDataRepository(val context: Context) : MoviesRepository {
         }
         return movies
     }
+
     private fun ratingDoubleToInt(tmdbRating: Double?) = tmdbRating?.div(2)?.toInt()
 }

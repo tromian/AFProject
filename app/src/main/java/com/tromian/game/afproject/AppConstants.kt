@@ -14,7 +14,7 @@ class AppConstants {
         val NOT_ADULT_CONTENT_AGE = 13
 
         val LOG = "MyLog"
-
+        val NETWORK_PAGE_SIZE = 5
     }
 
 

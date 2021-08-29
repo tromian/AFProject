@@ -1,48 +1,43 @@
 package com.tromian.game.afproject.presentation.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.tromian.game.afproject.domain.MovieListType
 import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.domain.repository.MoviesRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 
 class MoviesViewModel(
-    private val repository: MoviesRepository
+    repository: MoviesRepository
 ) : ViewModel() {
 
-    private val _movieList = MutableLiveData<List<Movie>>()
-    val movieList: LiveData<List<Movie>> = _movieList
+    private var nowPlayingList = repository.getMovieListResultStream(MovieListType.NOW_PLAYING)
+        .toStateFlow()
 
-    var page: Int = 1
+    private var popularList = repository.getMovieListResultStream(MovieListType.POPULAR)
+        .toStateFlow()
 
-    init {
-        loadNowPlaying()
+    private var topRatedList = repository.getMovieListResultStream(MovieListType.TOP_RATED)
+        .toStateFlow()
+
+    private var upcomingList = repository.getMovieListResultStream(MovieListType.UPCOMING)
+        .toStateFlow()
+    
+    fun loadList(listType: MovieListType): StateFlow<PagingData<Movie>> {
+        return when (listType) {
+            MovieListType.UPCOMING -> upcomingList
+            MovieListType.POPULAR -> popularList
+            MovieListType.NOW_PLAYING -> nowPlayingList
+            MovieListType.TOP_RATED -> topRatedList
+        }
     }
 
+    private fun Flow<PagingData<Movie>>.toStateFlow() = this.cachedIn(viewModelScope)
+        .stateIn(viewModelScope, SharingStarted.Lazily, PagingData.empty())
 
-    fun loadNowPlaying() = viewModelScope.launch {
-        val localData: List<Movie> = withContext(Dispatchers.IO) {
-            repository.getSavedMovieListFromDB()
-        }
-
-        if (localData.isNotEmpty()) {
-            _movieList.postValue(localData)
-        }
-        val remoteData: List<Movie> = withContext(Dispatchers.IO) {
-            repository.nowPlayingMoviesFromApiWithPage(page)
-        }
-
-        if (remoteData.isNotEmpty()) {
-            withContext(Dispatchers.IO) {
-                repository.saveMovieListToDB(remoteData)
-                val updatedLocalData = repository.getSavedMovieListFromDB()
-                _movieList.postValue(updatedLocalData)
-            }
-        }
-
-    }
 }

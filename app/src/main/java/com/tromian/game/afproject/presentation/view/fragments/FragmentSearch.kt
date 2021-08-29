@@ -1,34 +1,39 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.tromian.game.afproject.AppConstants
-import com.tromian.game.afproject.Di
 import com.tromian.game.afproject.R
+import com.tromian.game.afproject.appComponent
 import com.tromian.game.afproject.presentation.view.adapters.MovieListAdapter
 import com.tromian.game.afproject.presentation.viewmodels.MovieSearchVM
+import com.tromian.game.afproject.presentation.viewmodels.ViewModelFactory
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
 class FragmentSearch : Fragment(R.layout.fragment_search) {
 
-    lateinit var viewModel : MovieSearchVM
+    @Inject
+    lateinit var factory: ViewModelFactory.Factory
+
+    private val viewModel by viewModels<MovieSearchVM>(){
+        factory.create()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        context.appComponent.inject(this)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this, object : ViewModelProvider.Factory{
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MovieSearchVM(Di.moviesRepo) as T
-            }
-        }).get(MovieSearchVM::class.java)
 
         var job: Job? = null
 
