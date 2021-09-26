@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="@color/background_card"
@@ -67,10 +65,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
             android:text="@string/movie_name"
             android:textColor="@color/heading_white"
             android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/tvRuntime"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
@@ -84,37 +83,23 @@
             android:layout_marginBottom="24dp"
             android:text="@string/movie_categories"
             android:textColor="@color/categories"
-            android:textSize="8sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/ivMask"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
 
         <TextView
-            android:id="@+id/tvReviews"
+            android:id="@+id/tvReviewsCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="@string/movie_reviews"
+            android:text="@string/movie_reviews_count"
             android:textColor="@color/white_050"
-            android:textSize="8sp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/rating"
             app:layout_constraintStart_toEndOf="@+id/rating"
             app:layout_constraintTop_toTopOf="@+id/rating" />
-
-        <TextView
-            android:id="@+id/tvRuntime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/runtime"
-            android:textColor="@color/white_050"
-            android:textSize="8sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/liked_item"
@@ -130,11 +115,23 @@
             android:id="@+id/rating"
             layout="@layout/rating"
             android:layout_width="52dp"
-            android:layout_height="8dp"
+            android:layout_height="11dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTag" />
+
+        <TextView
+            android:id="@+id/tvReviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/reviews"
+            android:textColor="@color/white_050"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/rating"
+            app:layout_constraintStart_toEndOf="@+id/tvReviewsCount"
+            app:layout_constraintTop_toTopOf="@+id/rating" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

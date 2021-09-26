@@ -13,7 +13,9 @@ class MoviePagingAdapter(val itemCallback: (itemId: Int) -> Unit) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return MovieViewHolder(inflater.inflate(R.layout.view_holder_movie, parent, false))
+        return MovieViewHolder(
+            inflater.inflate(R.layout.view_holder_movie, parent, false)
+        )
 
     }
 

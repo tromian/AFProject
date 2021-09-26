@@ -16,8 +16,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val title: TextView = itemView.findViewById(R.id.tvTitle)
     private val legalAge: TextView = itemView.findViewById(R.id.tvAge)
     private val category: TextView = itemView.findViewById(R.id.tvTag)
-    private val reviews: TextView = itemView.findViewById(R.id.tvReviews)
-    private val runtime: TextView = itemView.findViewById(R.id.tvRuntime)
+    private val reviews: TextView = itemView.findViewById(R.id.tvReviewsCount)
     private val liked: ImageView = itemView.findViewById(R.id.liked_item)
 
     private val star1: ImageView = itemView.findViewById(R.id.star1)
@@ -31,8 +30,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         title.text = movie.title
         legalAge.text = movie.pgAge.toString() + "+"
         category.text = movie.genres
-        reviews.text = "${movie.reviewCount} Reviews"
-        runtime.text = "${movie.runningTime} MIN"
+        reviews.text = "${movie.reviewCount}"
         movie.rating?.let { showRating(it) }
         liked.setImageResource(
             if (movie.isLiked) R.drawable.ic_heart_liked

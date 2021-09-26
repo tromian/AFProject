@@ -49,7 +49,6 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
         super.onViewCreated(view, savedInstanceState)
         tv_list_title = view.findViewById(R.id.tv_movie_list_title)
         tv_list_title.text = setListTitleByType(listType)
-
         val menuImage: ImageView = view.findViewById(R.id.iv_list_type_popup)
         menuImage.setOnClickListener {
             showPopupMenu(menuImage)

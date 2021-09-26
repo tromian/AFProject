@@ -2,7 +2,6 @@ package com.tromian.game.afproject.data.repository
 
 
 import android.app.Application
-import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -94,7 +93,6 @@ class MoviesDataRepository @Inject constructor(
                         result.data.actorList.toActor()
                     }
                 is Resource.Error -> {
-                    Log.d("MyLog", result.message)
                     emptyList()
                 }
             }
@@ -114,7 +112,6 @@ class MoviesDataRepository @Inject constructor(
                         result.data.genres.toGenre()
                     }
                 is Resource.Error -> {
-                    Log.d("MyLog", result.message)
                     return emptyList()
                 }
             }
@@ -135,7 +132,6 @@ class MoviesDataRepository @Inject constructor(
                 is Resource.Success ->
                     result.data.movieList.toMovie()
                 is Resource.Error -> {
-                    Log.d("MyLog", result.message)
                     emptyList()
                 }
             }
@@ -177,7 +173,6 @@ class MoviesDataRepository @Inject constructor(
                 is Resource.Success ->
                     result.data.movieList.toMovie()
                 is Resource.Error -> {
-                    Log.d("MyLog", result.message)
                     emptyList()
                 }
             }

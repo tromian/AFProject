@@ -71,7 +71,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         val title: TextView = view.findViewById(R.id.tvTitle)
         val tags: TextView = view.findViewById(R.id.tvTag)
         val storyline: TextView = view.findViewById(R.id.storylineText)
-        val reviews: TextView = view.findViewById(R.id.tvReviews)
+        val reviews: TextView = view.findViewById(R.id.tvReviewsCount)
 
 
         Glide.with(view.context)
@@ -84,7 +84,8 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
         storyline.text = movie.storyLine
         age.text = movie.pgAge.toString() + "+"
         tags.text = movie.genres
-        reviews.text = "${movie.reviewCount} Reviews"
+        reviews.text =
+            "${movie.reviewCount}"
         movie.rating
         setStars(movie.rating, view)
         setLikeItem(view, movie)

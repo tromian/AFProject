@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Обзор Фильмов</string>
+    <string name="legal_age">13+</string>
+    <string name="movie_name">Avengers: End Game</string>
+    <string name="movie_categories">Action, Adventure, Fantasy</string>
+    <string name="movie_reviews_count">123 Review</string>
+    <string name="text_back">Назад</string>
+    <string name="movie_storyline_header">Описание</string>
+    <string name="movie_storyline">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
+    <string name="movie_cast_header">Актеры</string>
+    <string name="runtime">127 MIN</string>
+    <string name="title_movies_list">Список фильмов</string>
+    <string name="menu_main_list">Списки фильмов</string>
+    <string name="menu_search">Поиск</string>
+    <string name="menu_liked_movies">Сохраненные</string>
+    <string name="title_favourite">Любимые</string>
+    <string name="tv_select_list">Выбрать список</string>
+    <string name="item_now_playing">В прокате</string>
+    <string name="item_popular">Популярные</string>
+    <string name="item_upcoming">Скоро в прокате</string>
+    <string name="item_top_rated">Топ</string>
+    <string name="et_search_hint">Ведите название фильма</string>
+    <string name="reviews">Отзывы</string>
+    <string name="api_language">ru</string>
+</resources>

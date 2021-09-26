@@ -22,7 +22,7 @@ import javax.inject.Singleton
 
 @Component(modules = [AppModule::class])
 @Singleton
-interface AppComponent{
+interface AppComponent {
 
     fun inject(fragment: FragmentMoviesList)
     fun inject(fragment: FragmentMoviesDetails)
@@ -51,12 +51,15 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTmdbService() : TmdbAPI {
+    fun provideTmdbService(appContext: Application): TmdbAPI {
         val authInterceptor = Interceptor { chain ->
             val newUrl = chain.request().url
                 .newBuilder()
                 .addQueryParameter("api_key", AppConstants.TMDB_API_KEY)
-                .addQueryParameter("language", AppConstants.LANGUAGE)
+                .addQueryParameter(
+                    "language",
+                    appContext.resources.getString(R.string.api_language)
+                )
                 .build()
 
             val newRequest = chain.request()
@@ -106,6 +109,6 @@ interface AppBindModule {
     @Binds
     fun bindMoviesRepoImpl_to_MoviesRepo(
         moviesRepoImpl: MoviesDataRepository
-    ) : MoviesRepository
+    ): MoviesRepository
 
 }

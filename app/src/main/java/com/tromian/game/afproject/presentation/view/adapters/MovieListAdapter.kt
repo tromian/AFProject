@@ -9,23 +9,24 @@ import com.tromian.game.afproject.domain.models.Movie
 import com.tromian.game.afproject.presentation.view.fragments.holders.MovieViewHolder
 
 
-class MovieListAdapter(val itemCallback: (itemId: Int) -> Unit)
-    : ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
+class MovieListAdapter(val itemCallback: (itemId: Int) -> Unit) :
+    ListAdapter<Movie, MovieViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                    oldItem.id == newItem.id
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean =
-                    oldItem == newItem
+                oldItem == newItem
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-
         val inflater = LayoutInflater.from(parent.context)
-        return MovieViewHolder(inflater.inflate(R.layout.view_holder_movie, parent, false))
+        return MovieViewHolder(
+            inflater.inflate(R.layout.view_holder_movie, parent, false)
+        )
 
     }
 
@@ -37,7 +38,5 @@ class MovieListAdapter(val itemCallback: (itemId: Int) -> Unit)
         }
 
     }
-
-
 
 }

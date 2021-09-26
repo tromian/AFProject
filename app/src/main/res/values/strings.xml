@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">AFProject</string>
+    <string name="app_name">Movie Trends</string>
     <string name="legal_age">13+</string>
     <string name="movie_name">Avengers: End Game</string>
     <string name="movie_categories">Action, Adventure, Fantasy</string>
-    <string name="movie_reviews">123 Review</string>
+    <string name="movie_reviews_count">123</string>
     <string name="text_back">Back</string>
     <string name="movie_storyline_header">Storyline</string>
     <string name="movie_storyline">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
@@ -20,4 +20,6 @@
     <string name="item_upcoming">Upcoming</string>
     <string name="item_top_rated">Top Rated</string>
     <string name="et_search_hint">Print movie name</string>
+    <string name="reviews">Reviews</string>
+    <string name="api_language">en</string>
 </resources>
