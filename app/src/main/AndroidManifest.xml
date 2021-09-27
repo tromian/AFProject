@@ -15,7 +15,9 @@
         android:theme="@style/Theme.AFProject">
 
 
-        <activity android:name=".presentation.view.MainActivity">
+        <activity
+            android:name=".presentation.view.MainActivity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -7,13 +7,13 @@ plugins {
 
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdk 31
+
 
     defaultConfig {
         applicationId "com.tromian.game.afproject"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdk 21
+        targetSdk 31
         versionCode 1
         versionName "1.0"
 
@@ -26,13 +26,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
+
+
     buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("local.properties").newDataInputStream())
@@ -49,7 +44,7 @@ dependencies {
     def lifecycle_version = "2.3.1"
     def room_version = "2.3.0"
     def retrofit2_version = "2.9.0"
-    def navigationVersion = "2.4.0-alpha02"
+    def navigationVersion = "2.4.0-alpha09"
     def paging_version = "3.0.1"
     def dagger_version = "2.35.1"
 
