@@ -1,6 +1,7 @@
 package com.tromian.game.afproject.presentation.view.fragments
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -64,6 +65,7 @@ class FragmentMoviesDetails : Fragment(R.layout.fragment_movie_details) {
     }
 
 
+    @SuppressLint("SetTextI18n")
     fun bind(view: View, movie: Movie) {
 
         val poster: ImageView = view.findViewById(R.id.ivBackgroundPoster)
