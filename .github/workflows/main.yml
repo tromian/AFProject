@@ -20,9 +20,5 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Build with Gradle
-        run: ./gradlew build
-      - name: Upload APK
-        uses: actions/upload-artifact@v2.2.4
-        with:
-          name: app
-          path: app/build/output/apk/debug/app-debug.apk
+        run: ./gradlew :app:assemble
+      
