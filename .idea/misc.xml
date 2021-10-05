@@ -6,6 +6,8 @@
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/drawable/back.xml" value="0.236986301369863" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/drawable/ic_list_type_menu.xml" value="0.236986301369863" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/drawable/ic_resource_default.xml" value="0.236986301369863" />
+        <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout-land/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout-land/fragment_movies_list.xml" value="0.23579545454545456" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout/activity_main.xml" value="0.20925925925925926" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout/fragment_favourite_movies.xml" value="0.2228310502283105" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout/fragment_movie_details.xml" value="0.22592592592592592" />
@@ -13,6 +15,8 @@
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout/fragment_search.xml" value="0.22592592592592592" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout/view_holder_actor.xml" value="0.32146118721461187" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/layout/view_holder_movie.xml" value="0.24534501642935377" />
+        <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/menu-land/bottom_nav_menu.xml" value="0.32592592592592595" />
+        <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/menu-land/fragment_movies_list.xml" value="0.32592592592592595" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/menu/bottom_nav_menu.xml" value="0.32146118721461187" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/menu/list_type_popup_menu.xml" value="0.22592592592592592" />
         <entry key="..\:/Users/User/StudioProjects/AFProject/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.236986301369863" />

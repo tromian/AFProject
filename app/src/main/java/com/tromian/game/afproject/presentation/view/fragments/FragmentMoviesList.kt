@@ -2,6 +2,7 @@ package com.tromian.game.afproject.presentation.view.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -35,7 +36,7 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
     }
 
     private val adapter by lazy(LazyThreadSafetyMode.NONE) {
-        MoviePagingAdapter() { itemId ->
+        MoviePagingAdapter { itemId ->
             openFragment(itemId)
         }
     }
@@ -67,9 +68,12 @@ class FragmentMoviesList : Fragment(R.layout.fragment_movies_list) {
 
     private fun openFragment(itemId: Int) {
         val movie = adapter.snapshot().items[itemId]
+        Log.d("go", "${this.javaClass.name} + ${movie.javaClass.name}")
         val action = FragmentMoviesListDirections
             .actionFragmentMoviesListToFragmentMoviesDetails(movie)
         findNavController().navigate(action)
+
+
     }
 
     private fun showPopupMenu(view: View) {
