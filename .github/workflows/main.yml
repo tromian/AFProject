@@ -22,7 +22,7 @@ jobs:
         run: chmod +x ./gradlew
       - name: Access TMDB_API_KEY
         env:
-          TMDB_API_KEY: ${{ secrets.TMDB_APIKEY }}
+          TMDB_API_KEY: ${{ secrets.TMDB_API_KEY }}
         run: echo tmdb_api_key=\"$TMDB_API_KEY\" > ./local.properties
       - name: Build with Gradle
         run: ./gradlew :app:assemble
